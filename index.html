@@ -169,19 +169,13 @@ h1,h2,h3,h4{color:var(--ink);line-height:1.2}
 .deco-card{border:1px solid var(--border);border-radius:6px;padding:14px 16px}
 .deco-card .dn{font-weight:900;color:var(--navy);font-size:14.5px;margin-bottom:10px;display:flex;align-items:center;gap:8px}
 .deco-card .dn .mtag{background:var(--tier);color:var(--orange-h);font-size:10.5px;font-weight:900;letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border-radius:50rem}
-/* left main copy + right decision aside */
-.deco-grid{display:grid;grid-template-columns:1fr 250px;gap:18px;align-items:start}
+/* decoration section = full description + structured facts only */
 .deco-main .deco-desc{font-size:13.5px;color:var(--text);line-height:1.65;margin-bottom:12px}
 .deco-main .deco-desc p{margin-bottom:8px}
 .deco-main .deco-desc p:last-child{margin-bottom:0}
 .deco-specs{display:flex;flex-wrap:wrap;gap:8px 10px}
 .deco-spec{font-size:12.5px;color:var(--text);background:var(--gray);border:1px solid var(--border);border-radius:5px;padding:5px 10px}
 .deco-spec b{color:var(--ink);font-weight:700}
-.deco-aside{background:var(--tier);border:1px solid #ffd9c4;border-radius:6px;padding:12px 13px}
-.deco-aside .at{font-size:11px;font-weight:900;letter-spacing:.06em;text-transform:uppercase;color:var(--orange-h);margin-bottom:7px;display:flex;align-items:center;gap:6px}
-.deco-aside .at svg{width:14px;height:14px}
-.deco-aside .as{font-size:13px;color:var(--ink);font-weight:700;line-height:1.5;margin-bottom:8px}
-.deco-aside .ah{font-size:12.5px;color:var(--text);line-height:1.6}
 .deco-empty{border:1px dashed var(--border);border-radius:6px;padding:16px;background:var(--gray);max-width:660px;display:flex;gap:12px;align-items:flex-start}
 .deco-empty svg{width:22px;height:22px;color:var(--navy);flex:none;margin-top:1px}
 .deco-empty b{display:block;color:var(--ink);font-size:14px;margin-bottom:3px}
@@ -252,11 +246,67 @@ h1,h2,h3,h4{color:var(--ink);line-height:1.2}
 .serp .stit{font-size:18px;color:#1a0dab;line-height:1.3;margin:2px 0 3px}
 .serp .sdesc{font-size:13px;color:#4d5156;line-height:1.5}
 
+/* ===== CUSTOMIZE CONFIGURATOR (State 2 — modal overlay) ===== */
+.cfg-overlay{position:fixed;inset:0;background:rgba(0,21,66,.55);z-index:200;display:none;padding:24px;overflow-y:auto}
+.cfg-overlay.open{display:block}
+.cfg-modal{max-width:920px;margin:0 auto;background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.35)}
+.cfg-head{background:var(--navy);color:#fff;display:flex;align-items:center;gap:14px;padding:16px 22px}
+.cfg-head .step{font-size:11px;font-weight:900;letter-spacing:.12em;background:var(--orange);padding:4px 9px;border-radius:3px}
+.cfg-head .ct{font-size:17px;font-weight:900;color:#fff}
+.cfg-head .csub{font-size:12.5px;color:#9fb0d4;display:block;font-weight:400;margin-top:1px}
+.cfg-close{margin-left:auto;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.25);color:#fff;font-family:inherit;font-weight:700;font-size:13px;border-radius:50rem;padding:7px 15px;cursor:pointer}
+.cfg-close:hover{background:rgba(255,255,255,.2)}
+.cfg-body{display:grid;grid-template-columns:160px 1fr;gap:0}
+.cfg-preview{background:var(--gray);border-right:1px solid var(--border);padding:22px 16px;display:flex;flex-direction:column;align-items:center;gap:10px}
+.cfg-preview .pi{width:90px;height:90px;color:var(--navy)}
+.cfg-preview .pn{font-size:12.5px;font-weight:700;color:var(--ink);text-align:center;line-height:1.35}
+.cfg-preview .pp{font-size:13px;color:var(--orange);font-weight:900}
+.cfg-main{padding:20px 24px 24px}
+.cfg-grid{display:grid;grid-template-columns:1fr 300px;gap:22px;align-items:start}
+.cfg-step{margin-bottom:18px}
+.cfg-step .sl{font-size:12px;font-weight:900;letter-spacing:.06em;text-transform:uppercase;color:var(--navy);margin-bottom:9px;display:flex;align-items:center;gap:7px}
+.cfg-step .sl .num{width:18px;height:18px;background:var(--navy);color:#fff;border-radius:50%;font-size:11px;display:grid;place-items:center}
+.method-picker{display:flex;flex-wrap:wrap;gap:9px}
+.method-chip{border:1.5px solid var(--border);background:#fff;border-radius:7px;padding:10px 15px;cursor:pointer;font-family:inherit;text-align:left;min-width:130px}
+.method-chip:hover{border-color:var(--orange)}
+.method-chip.on{border-color:var(--orange);background:var(--tier)}
+.method-chip .mc-n{display:block;font-size:14px;font-weight:900;color:var(--ink)}
+.method-chip .mc-s{display:block;font-size:11.5px;color:var(--text);margin-top:2px}
+.cfg-locs{display:flex;flex-wrap:wrap;gap:8px}
+.cfg-loc{border:1px solid var(--border);border-radius:50rem;padding:6px 13px;font-size:12.5px;color:var(--text);background:#fff;cursor:pointer;font-family:inherit}
+.cfg-loc.on{border-color:var(--orange);color:var(--orange-h);background:var(--tier);font-weight:700}
+.cfg-colorrow{display:flex;align-items:center;gap:9px}
+.cfg-colorrow .swatch{width:30px;height:30px}
+.cfg-qty{display:flex;gap:10px;align-items:center}
+.cfg-qty input{width:90px;height:42px;border:1px solid var(--border);text-align:center;font-family:inherit;font-size:15px;font-weight:700;color:var(--ink)}
+.cfg-qty .note{font-size:12.5px;color:var(--text)}
+/* decision layer — surfaces selected method's short_description + hint */
+.cfg-decision{background:var(--tier);border:1px solid #ffd9c4;border-radius:8px;padding:16px;position:sticky;top:0}
+.cfg-decision .dt{font-size:11px;font-weight:900;letter-spacing:.06em;text-transform:uppercase;color:var(--orange-h);margin-bottom:9px;display:flex;align-items:center;gap:7px}
+.cfg-decision .dt svg{width:15px;height:15px}
+.cfg-decision .d-method{font-size:15px;font-weight:900;color:var(--ink);margin-bottom:8px}
+.cfg-decision .d-short{font-size:13px;color:var(--ink);font-weight:700;line-height:1.5;margin-bottom:10px}
+.cfg-decision .d-hint{font-size:12.5px;color:var(--text);line-height:1.6}
+.cfg-decision.empty .d-short{font-weight:400;color:var(--text)}
+.cfg-decision .d-placeholder{font-size:13px;color:var(--text);line-height:1.6}
+.cfg-foot{border-top:1px solid var(--border);margin-top:4px;padding-top:18px;display:flex;align-items:center;gap:12px}
+.cfg-foot .cback{background:none;border:1px solid var(--navy);color:var(--navy);font-family:inherit;font-weight:700;font-size:14px;padding:11px 20px;cursor:pointer;border-radius:4px}
+.cfg-foot .cback:hover{background:var(--navy);color:#fff}
+.cfg-foot .cadd{background:var(--orange);color:#fff;border:0;font-family:inherit;font-weight:900;font-size:14px;text-transform:uppercase;letter-spacing:.02em;padding:12px 26px;cursor:pointer;border-radius:4px}
+.cfg-foot .cadd:hover{background:var(--orange-h)}
+.cfg-foot .cmock{margin-left:auto;font-size:11.5px;color:var(--muted)}
+/* no-methods configurator state (award / apparel) */
+.cfg-noquote{border:1px dashed var(--border);background:var(--gray);border-radius:8px;padding:20px;display:flex;gap:14px;align-items:flex-start}
+.cfg-noquote svg{width:26px;height:26px;color:var(--navy);flex:none;margin-top:1px}
+.cfg-noquote b{display:block;color:var(--ink);font-size:15px;margin-bottom:4px}
+.cfg-noquote p{font-size:13px;color:var(--text);line-height:1.55}
+@media (max-width:720px){.cfg-body{grid-template-columns:1fr}.cfg-preview{flex-direction:row;border-right:0;border-bottom:1px solid var(--border)}}
+
 @media (max-width:980px){
   .product-section{grid-template-columns:1fr;gap:26px}
   .highlights,.xsell{grid-template-columns:repeat(2,1fr)}
   .ship-grid{grid-template-columns:1fr}
-  .deco-grid{grid-template-columns:1fr}
+  .cfg-grid{grid-template-columns:1fr}
 }
 </style>
 </head>
@@ -313,6 +363,9 @@ h1,h2,h3,h4{color:var(--ink);line-height:1.2}
   <!-- SEO / Google annotation panel (reviewer aid) -->
   <div class="seo-panel" id="seoPanel"></div>
 </div>
+
+<!-- CUSTOMIZE CONFIGURATOR (State 2) — populated + toggled by JS -->
+<div class="cfg-overlay" id="cfgOverlay" role="dialog" aria-modal="true"></div>
 
 <footer class="site-footer">
   <div class="footer-inner">
@@ -675,7 +728,7 @@ function buildBuybox(p){
     ${colorBlock}
     <div class="bb-block">
       <div class="lbl">Quantity</div>
-      <div class="qty-cta"><input class="qty-input" value="${esc(c.qty)}"><button class="btn-cta">Customize Your Product</button></div>
+      <div class="qty-cta"><input class="qty-input" value="${esc(c.qty)}"><button class="btn-cta" data-customize>Customize Your Product</button></div>
       <div class="trust-row">
         <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l8 4v6c0 5-8 10-8 10S4 17 4 12V6z"/></svg>100% Guarantee</span>
         <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7h13v10H3z"/></svg>Free Sample</span>
@@ -719,21 +772,16 @@ function decoBody(p){
     const cards = facts.map(f=>{
       const copy = methodCopyFor(f.method);
       const facetags = `<div class="deco-specs">${f.specs.map(s=>`<span class="deco-spec">${s[0]?`<b>${esc(s[0])}:</b> `:''}${esc(s[1])}</span>`).join('')}</div>`;
-      // LEFT: full_description (if mapped) + structured facts. RIGHT: short_description + hint decision aside.
-      const left = `<div class="deco-main">${copy?`<div class="deco-desc">${descParas(copy.full_description)}</div>`:''}${facetags}</div>`;
-      const aside = copy?`<aside class="deco-aside">
-          <div class="at"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 113 2.4V13"/><path d="M12 16h.01"/></svg>When to choose this</div>
-          <div class="as">${esc(copy.short_description)}</div>
-          <div class="ah">${esc(copy.hint)}</div>
-        </aside>`:'';
-      const inner = copy ? `<div class="deco-grid">${left}${aside}</div>` : left;
+      // Section = full_description (if mapped) + structured facts only.
+      // The short_description + hint "decision layer" now lives in the Customize configurator, not here.
+      const body = `<div class="deco-main">${copy?`<div class="deco-desc">${descParas(copy.full_description)}</div>`:''}${facetags}</div>`;
       return `<div class="deco-card">
         <div class="dn">${esc(f.method)}<span class="mtag">Method</span></div>
-        ${inner}
+        ${body}
       </div>`;
     }).join('');
     return `<div class="deco-mini">${cards}</div>
-      <div class="deco-foot">Imprint facts above are from the product feed. Method descriptions are from the decoration-copy dictionary. Final colors, art proofs, and run charges are confirmed in the Customize step.</div>`;
+      <div class="deco-foot">Imprint facts above are from the product feed. Method descriptions are from the decoration-copy dictionary. Choose a method and see when to use it in the <b>Customize</b> step. Final colors, art proofs, and run charges are confirmed there.</div>`;
   }
   // null block3_imprint_facts — graceful empty / not-yet state (S608 apparel, 7127 award). Do NOT invent specs.
   return `<div class="deco-empty">
@@ -749,6 +797,125 @@ function decoBadge(p){
   if(!facts) return '';
   return facts.length>1 ? `${facts.length} methods` : '1 method';
 }
+
+/* ===================================================================
+   CUSTOMIZE CONFIGURATOR (State 2)
+   - Opens from the buy box CTA.
+   - Method picker for the current product's feed methods.
+   - Selecting a method surfaces that method's short_description + hint
+     (the decision layer) in the right-hand panel. Same copy as METHOD_COPY.
+   - Products with no feed methods (7127 award, S608 apparel) -> request-a-quote state.
+   - Light placeholder chrome: imprint location / colors / quantity.
+   =================================================================== */
+let CFG_METHOD = 0; // index of selected method within current product
+
+function buildConfigurator(p){
+  const v=p.v2, c=p.chrome;
+  const facts = parseImprintFacts(v.block3_imprint_facts); // null for 7127 / S608
+  const ov = document.getElementById('cfgOverlay');
+
+  const preview = `
+    <div class="cfg-preview">
+      <svg class="pi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3">${ICONS[p.icon]||''}</svg>
+      <div class="pn">${esc(v.rephrased_title)}</div>
+      <div class="pp">${esc(c.price)} <span style="font-size:11px;color:var(--text);font-weight:400">${esc(c.priceEa)}</span></div>
+    </div>`;
+
+  let mainHtml;
+  if(facts){
+    // method picker chips
+    const chips = facts.map((f,i)=>{
+      const copy = methodCopyFor(f.method);
+      const oneLiner = copy ? copy.short_description.split(',')[0] : 'Custom imprint';
+      return `<button class="method-chip ${i===CFG_METHOD?'on':''}" data-cfg-method="${i}">
+        <span class="mc-n">${esc(f.method)}</span>
+        <span class="mc-s">${esc(oneLiner)}</span>
+      </button>`;
+    }).join('');
+
+    // representative location set (from the selected method's facts if present, else generic)
+    const locsFor = (i)=>{
+      const loc = (facts[i].specs.find(s=>/location/i.test(s[0]))||[])[1];
+      return loc ? loc.split(',').map(x=>x.trim()) : ['Front','Back'];
+    };
+    const locChips = locsFor(CFG_METHOD).map((l,i)=>`<button class="cfg-loc ${i===0?'on':''}" data-cfg-loc>${esc(l)}</button>`).join('');
+
+    mainHtml = `
+      <div class="cfg-grid">
+        <div>
+          <div class="cfg-step">
+            <div class="sl"><span class="num">1</span> Choose a decoration method</div>
+            <div class="method-picker" id="cfgMethods">${chips}</div>
+          </div>
+          <div class="cfg-step">
+            <div class="sl"><span class="num">2</span> Imprint location</div>
+            <div class="cfg-locs" id="cfgLocs">${locChips}</div>
+          </div>
+          <div class="cfg-step">
+            <div class="sl"><span class="num">3</span> Imprint colors</div>
+            <div class="cfg-colorrow">
+              ${['1a1a1a','b3242c','1f3fae','177a3a','f4f4f2'].map((h,i)=>`<span class="swatch ${i===0?'on':''}" style="background:#${h}"></span>`).join('')}
+              <span style="font-size:12.5px;color:var(--text)">Add up to the method's max colors</span>
+            </div>
+          </div>
+          <div class="cfg-step">
+            <div class="sl"><span class="num">4</span> Quantity</div>
+            <div class="cfg-qty"><input value="${esc(c.qty)}"><span class="note">Tiered pricing applies — see the buy box for breaks.</span></div>
+          </div>
+        </div>
+        <div class="cfg-decision" id="cfgDecision">${decisionHtml(facts[CFG_METHOD])}</div>
+      </div>
+      <div class="cfg-foot">
+        <button class="cback" data-cfg-close>‹ Back to product</button>
+        <button class="cadd">Add to Cart</button>
+        <span class="cmock">Mock configurator — placeholder chrome; focus is the method decision layer.</span>
+      </div>`;
+  } else {
+    // no feed methods (7127 award, S608 apparel) — request a quote, no method copy
+    mainHtml = `
+      <div class="cfg-noquote">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+        <div>
+          <b>Decoration options available — request a quote</b>
+          <p>This item can be customized with your logo or message, but structured imprint methods aren't in the feed yet. Submit a quote request or talk to your rep and we'll confirm available decoration methods, locations, colors, and setup pricing for this product.</p>
+        </div>
+      </div>
+      <div class="cfg-foot">
+        <button class="cback" data-cfg-close>‹ Back to product</button>
+        <button class="cadd">Request a Quote</button>
+        <span class="cmock">Mock configurator — no-methods state (matches the empty decoration section).</span>
+      </div>`;
+  }
+
+  ov.innerHTML = `
+    <div class="cfg-modal">
+      <div class="cfg-head">
+        <span class="step">STEP 2 · CUSTOMIZE</span>
+        <span class="ct">Customize Your Product<span class="csub">${esc(v.rephrased_title)}</span></span>
+        <button class="cfg-close" data-cfg-close>✕ Close</button>
+      </div>
+      <div class="cfg-body">
+        ${preview}
+        <div class="cfg-main">${mainHtml}</div>
+      </div>
+    </div>`;
+}
+
+// the decision layer: selected method's short_description (bold) + hint
+function decisionHtml(fact){
+  const copy = methodCopyFor(fact.method);
+  const head = `<div class="dt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 113 2.4V13"/><path d="M12 16h.01"/></svg>When to choose this</div>`;
+  if(!copy){
+    return `${head}<div class="d-method">${esc(fact.method)}</div><div class="d-placeholder">A custom imprint method. Your rep will confirm the best decoration approach for your artwork.</div>`;
+  }
+  return `${head}
+    <div class="d-method">${esc(fact.method)}</div>
+    <div class="d-short">${esc(copy.short_description)}</div>
+    <div class="d-hint">${esc(copy.hint)}</div>`;
+}
+
+function openConfigurator(){ CFG_METHOD=0; buildConfigurator(PRODUCTS[CUR]); document.getElementById('cfgOverlay').classList.add('open'); document.body.style.overflow='hidden'; }
+function closeConfigurator(){ document.getElementById('cfgOverlay').classList.remove('open'); document.body.style.overflow=''; }
 
 /* ---------- left-column stacked sections ---------- */
 function sections(p){
@@ -857,7 +1024,31 @@ document.addEventListener('click',e=>{
   if(pb){ CUR=+pb.dataset.prod; location.hash=PRODUCTS[CUR].id; render(); window.scrollTo({top:0,behavior:'smooth'}); return; }
   const st=e.target.closest('[data-sec-toggle]'); if(st){ st.closest('.psec').classList.toggle('open'); return; }
   const sg=e.target.closest('#seoToggle'); if(sg){ document.getElementById('seoPanel').classList.toggle('open'); return; }
+
+  // ---- Customize configurator ----
+  if(e.target.closest('[data-customize]')){ openConfigurator(); return; }
+  if(e.target.closest('[data-cfg-close]')){ closeConfigurator(); return; }
+  // click on the dark backdrop (outside the modal) closes
+  if(e.target.id==='cfgOverlay'){ closeConfigurator(); return; }
+  // method selection -> rebuild decision layer + refresh locations for that method
+  const mc=e.target.closest('[data-cfg-method]');
+  if(mc){
+    CFG_METHOD=+mc.dataset.cfgMethod;
+    const facts=parseImprintFacts(PRODUCTS[CUR].v2.block3_imprint_facts);
+    document.querySelectorAll('#cfgMethods .method-chip').forEach(b=>b.classList.toggle('on',+b.dataset.cfgMethod===CFG_METHOD));
+    document.getElementById('cfgDecision').innerHTML = decisionHtml(facts[CFG_METHOD]);
+    const loc=(facts[CFG_METHOD].specs.find(s=>/location/i.test(s[0]))||[])[1];
+    const locs = loc ? loc.split(',').map(x=>x.trim()) : ['Front','Back'];
+    document.getElementById('cfgLocs').innerHTML = locs.map((l,i)=>`<button class="cfg-loc ${i===0?'on':''}" data-cfg-loc>${l.replace(/[<>&]/g,'')}</button>`).join('');
+    return;
+  }
+  // location chip toggle (single-select, representative)
+  const lc=e.target.closest('[data-cfg-loc]');
+  if(lc){ lc.parentElement.querySelectorAll('.cfg-loc').forEach(x=>x.classList.remove('on')); lc.classList.add('on'); return; }
 });
+
+// Escape closes the configurator
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeConfigurator(); });
 
 // deep-link by product id in the hash (e.g. #B726)
 (function init(){
