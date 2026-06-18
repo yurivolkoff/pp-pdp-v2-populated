@@ -182,6 +182,14 @@ h1,h2,h3,h4{color:var(--ink);line-height:1.2}
 .deco-empty p{font-size:13px;color:var(--text);line-height:1.5}
 .deco-foot{font-size:12.5px;color:var(--muted);margin-top:9px}
 
+/* held-state (products excluded pending decoration-method feed data) */
+.held-banner{display:flex;gap:14px;align-items:flex-start;border:1px solid #f0c674;background:#fdf6e3;border-radius:8px;padding:20px;margin-top:8px}
+.held-banner svg{width:26px;height:26px;color:#b8860b;flex:none;margin-top:1px}
+.held-banner b{display:block;color:var(--ink);font-size:15px;margin-bottom:6px}
+.held-banner p{font-size:13.5px;color:var(--text);line-height:1.6}
+.held-side{border:1px dashed var(--border);border-radius:8px;padding:16px;background:var(--gray)}
+.held-side p{font-size:13px;color:var(--text);line-height:1.6;margin-top:4px}
+
 .ship-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;max-width:640px}
 .ship-card{border:1px solid var(--border);border-radius:6px;padding:13px}
 .ship-card b{display:block;color:var(--ink);font-size:13px;margin-bottom:5px}
@@ -314,8 +322,8 @@ h1,h2,h3,h4{color:var(--ink);line-height:1.2}
 
 <div class="demo-bar">
   <span class="tag">PROTOTYPE</span>
-  <span class="lbl">PDP populated with real v2-generated content — switch products in the bar below</span>
-  <span class="demo-hint">v2 content = title / subtitle / description / decoration facts / highlights / quick-facts / SEO. Commerce chrome is representative.</span>
+  <span class="lbl">PDP populated with hand-written v2.5 content — switch products in the bar below</span>
+  <span class="demo-hint">v2.5 = Highlights (lead) / Overview / decoration facts / SEO. 2 products held pending feed data. Commerce chrome is representative.</span>
 </div>
 
 <!-- PRODUCT NAVBAR — 5 tabs, one per product / demonstrated case -->
@@ -386,7 +394,7 @@ h1,h2,h3,h4{color:var(--ink);line-height:1.2}
    ============================================================ */
 const PRODUCTS = [
   {
-    id:'S608', case:'Apparel', tab:'Port Authority Polo', icon:'shirt',
+    id:'S608', held:true, case:'Apparel — held', tab:'Port Authority Polo', icon:'shirt',
     crumb:['Home','Apparel','Woven Shirts'],
     v2:{
       seo:{urlSlug:'port-authority-long-sleeve-easy-care-shirt',
@@ -442,31 +450,19 @@ const PRODUCTS = [
     id:'B726', case:'Drinkware', tab:'Tumbler (multi-method)', icon:'cup',
     crumb:['Home','Drinkware','Tumblers'],
     v2:{
-      seo:{urlSlug:'20-oz-padova-series-tumbler',
-        metaTitle:'20 oz Padova Series Tumbler | PromotionPros',
-        metaDescription:'Custom 20 oz double-wall stainless steel tumbler with copper vacuum insulation and powder coat finish. Order in bulk for corporate gifts and events.'},
-      rephrased_title:'20 oz Stainless Steel Double-Wall Vacuum Tumbler',
-      rephrased_short_description:'20 oz double-wall stainless steel tumbler with copper vacuum insulation, powder coat finish, and a stainless steel straw with silicone sipper, ready for custom decoration.',
-      block1_prose:'Constructed from double-wall stainless steel with copper vacuum insulation, this 20 oz tumbler maintains beverage temperature for extended periods while preventing exterior condensation. The durable powder coat finish adds grip and resists scratches, and the included stainless steel straw with color-coordinated silicone sipper makes it a complete, reusable drinkware solution. It arrives in an individual craft gift box, making it an elevated choice for corporate gifting, employee recognition, and event giveaways.',
-      block2_bullets:[
-        '**Copper Vacuum Insulation:** Double-wall construction with a copper layer keeps drinks hot or cold for hours without sweating.',
-        '**Powder Coat Finish:** Durable, scratch-resistant exterior provides a comfortable grip and a premium look.',
-        '**Reusable Straw Included:** Stainless steel straw with a color-matched silicone sipper reduces single-use plastic waste.',
-        '**Gift-Ready Packaging:** Each tumbler comes in an individual craft gift box, simplifying distribution for events and recognition programs.',
-        '**Two Decoration Methods:** Choose screen printing for up to 3 colors or Jet-Directt for full-color, photo-quality branding.'],
+      seo:{urlSlug:'20-oz-padova-stainless-steel-tumbler',
+        metaTitle:'20 oz Padova Stainless Steel Tumbler | PromotionPros',
+        metaDescription:'Custom 20 oz Padova double-wall stainless steel tumbler with copper vacuum insulation, a steel straw, and a craft gift box. Order with screen or full-color imprint.'},
+      rephrased_title:'20 oz Padova Stainless Steel Vacuum Tumbler',
+      rephrased_short_description:'20 oz double-wall stainless steel tumbler with copper vacuum insulation and a powder-coated finish, with a wraparound imprint zone for custom branding.',
+      overview:'The 20 oz Padova is a double-wall stainless steel tumbler with copper vacuum insulation that holds drinks hot or cold, finished with a powder-coated exterior. The matching stainless steel straw seats into a color-coordinated silicone sipper.',
+      highlights:[
+        {label:'Double-Wall Insulated Build',benefit:'A double-wall stainless body with a copper vacuum layer holds drinks hot or cold.'},
+        {label:'Full-Color Wrap Printing',benefit:'Reproduce a full-color design — a photo, a pattern, or multiple logos — around the entire cup.'},
+        {label:'Decoration in the Price',benefit:'The imprint is included in the listed price, so the per-unit cost is the finished, branded cost.'},
+        {label:'Ships in a Gift Box',benefit:'Arrives with its stainless steel straw in an individual craft gift box, ready to hand out.'}],
       block3_imprint_facts:'Method: Screen · Locations: Side 1, Side 2, Full Wrap · Colors: 3 max\nMethod: Jet-Directt · Locations: Side 1, Side 2, Full Wrap · Colors: 256 max',
-      rephrased_long_description:'Constructed from double-wall stainless steel with copper vacuum insulation, this 20 oz tumbler maintains beverage temperature for extended periods while preventing exterior condensation. The durable powder coat finish adds grip and resists scratches, and the included stainless steel straw with color-coordinated silicone sipper makes it a complete, reusable drinkware solution. It arrives in an individual craft gift box, making it an elevated choice for corporate gifting, employee recognition, and event giveaways. Choose from screen printing for up to 3 colors or Jet-Directt for full-color, photo-quality branding.',
-      bullet_points_suggested:[
-        'Material — double-wall stainless steel with copper vacuum insulation',
-        'Finish — powder coated exterior for durability and grip',
-        'Straw — stainless steel straw with color-coordinated silicone sipper',
-        'Best For — corporate gifts, employee recognition, event giveaways',
-        'Packaging — individual craft gift box included'],
-      icon_cards:[
-        {label:'20 oz Capacity',micro:'Holds a generous serving of hot or cold beverages for daily use or travel.'},
-        {label:'Copper Vacuum Insulated',micro:'Double-wall construction with a copper layer keeps drinks at temperature for hours without exterior condensation.'},
-        {label:'Two Imprint Methods',micro:'Screen printing for up to 3 colors or Jet-Directt for full-color, photo-quality decoration.'},
-        {label:'Gift Box Included',micro:'Each tumbler arrives in an individual craft gift box, ready for presentation.'}]
+      rephrased_long_description:'The 20 oz Padova is a double-wall stainless steel tumbler with copper vacuum insulation that holds drinks hot or cold, finished with a powder-coated exterior. The matching stainless steel straw seats into a color-coordinated silicone sipper, and each unit ships in an individual craft gift box. Available with a screen or Jet-Directt full-color imprint, including a full wrap around the cup, it is a durable, practical tumbler for custom branding.'
     },
     chrome:{
       price:'$14.95', priceEa:'/ ea at 48', tiers:'24 → $16.75 · 48 → $14.95 · 96 → $13.50 · 250 → $12.10 each',
@@ -497,28 +493,16 @@ const PRODUCTS = [
     v2:{
       seo:{urlSlug:'yellowfin-tuna-stress-reliever',
         metaTitle:'Yellowfin Tuna Stress Reliever | PromotionPros',
-        metaDescription:'Custom-printed Yellowfin Tuna stress reliever made of polyurethane. Order in bulk for ocean-themed events, fishing tournaments, and corporate wellness giveaways.'},
+        metaDescription:'Custom-printed yellowfin tuna stress reliever in soft polyurethane with a side imprint zone, up to 4 colors. Order branded in bulk.'},
       rephrased_title:'Yellowfin Tuna Polyurethane Stress Reliever',
-      rephrased_short_description:'Yellowfin tuna-shaped stress reliever made of soft polyurethane, sized for desk and pocket use, with a side imprint zone for custom branding.',
-      block1_prose:'Molded from soft polyurethane, this Yellowfin Tuna stress reliever delivers a satisfying squeeze that helps release tension during long meetings or travel. Its detailed tuna shape with fins and tail makes it a natural fit for ocean-themed promotions, fishing tournaments, and coastal business giveaways. The compact size slips easily into a pocket or desk drawer, so recipients can keep it within reach whenever stress strikes.',
-      block2_bullets:[
-        '**Polyurethane Construction:** Soft, durable foam material springs back after every squeeze, maintaining its shape through repeated use.',
-        '**Detailed Tuna Shape:** Realistic yellowfin design with fins and tail creates instant recognition for marine and fishing audiences.',
-        '**Side Imprint Zone:** Pad-printed decoration area on the side supports up to 4 colors for logos and event details.',
-        '**Pocket-Sized Portability:** Compact dimensions fit easily in a pocket, bag, or desk organizer for on-the-go stress relief.',
-        '**Bulk-Order Ready:** Consistent quality across production runs makes it suitable for large-scale giveaways and event swag bags.'],
+      rephrased_short_description:'Yellowfin tuna-shaped stress reliever made of soft polyurethane, sized for desk or pocket, with a side imprint zone for custom branding.',
+      overview:'Molded from soft polyurethane, this stress reliever takes the detailed shape of a yellowfin tuna, fins and tail included. It has a light give that springs back after a squeeze, and it is sized to sit on a desk or drop into a pocket.',
+      highlights:[
+        {label:'Compact Side Imprint',benefit:'Your logo pad-prints onto the side in up to 4 colors; the 1 × 5/8 in. area suits a clean logo, not fine detail.'},
+        {label:'Squeeze-and-Spring Foam',benefit:'The soft polyurethane gives under a squeeze and springs back, holding its shape through repeated use.'},
+        {label:'Pocket-Sized',benefit:'Compact enough to sit on a desk or drop into a pocket.'}],
       block3_imprint_facts:'Method: Pad · Area: 1×5/8 in. (sides) · Colors: 4 max · Setup: $60.00',
-      rephrased_long_description:'Molded from soft polyurethane, this Yellowfin Tuna stress reliever delivers a satisfying squeeze that helps release tension during long meetings or travel. Its detailed tuna shape with fins and tail makes it a natural fit for ocean-themed promotions, fishing tournaments, and coastal business giveaways. The compact size slips easily into a pocket or desk drawer, so recipients can keep it within reach whenever stress strikes. The durable foam material springs back after every squeeze, maintaining its shape through repeated use, and the realistic yellowfin design creates instant recognition for marine and fishing audiences. A pad-printed decoration area on the side supports up to 4 colors for logos and event details, and consistent quality across production runs makes it suitable for large-scale giveaways and event swag bags.',
-      bullet_points_suggested:[
-        'Material — soft polyurethane foam springs back after squeezing',
-        'Decoration — pad print on side; up to 4 colors',
-        'Size — compact dimensions fit pocket, bag, or desk',
-        'Best For — fishing tournaments, ocean-themed events, coastal promotions, wellness giveaways'],
-      icon_cards:[
-        {label:'Polyurethane Foam',micro:'Soft, durable material springs back after every squeeze for long-lasting stress relief.'},
-        {label:'Side Imprint',micro:'Pad-printed decoration area on the side supports up to 4 colors for custom logos.'},
-        {label:'Pocket-Sized',micro:'Compact dimensions fit easily in a pocket, bag, or desk organizer for on-the-go use.'},
-        {label:'Bulk Orders',micro:'Consistent quality across production runs for large-scale giveaways and event swag bags.'}]
+      rephrased_long_description:'Molded from soft polyurethane, this stress reliever takes the detailed shape of a yellowfin tuna, fins and tail included. It has a light give that springs back after a squeeze and is sized to sit on a desk or drop into a pocket. A pad-printed side imprint zone accepts a custom logo in up to four colors.'
     },
     chrome:{
       price:'$2.18', priceEa:'/ ea at 250', tiers:'100 → $2.65 · 250 → $2.18 · 500 → $1.92 · 1000 → $1.68 each',
@@ -543,7 +527,7 @@ const PRODUCTS = [
     }
   },
   {
-    id:'7127', case:'Award', tab:'Globe (no imprint data)', icon:'globe',
+    id:'7127', held:true, case:'Award — held', tab:'Globe (held — no method)', icon:'globe',
     crumb:['Home','Office & Awards','Crystal Awards'],
     v2:{
       seo:{urlSlug:'spinning-globe-award-black-glass-optical-crystal',
@@ -599,31 +583,17 @@ const PRODUCTS = [
     id:'T537R5', case:'Pen', tab:'BIC (single-method)', icon:'pen',
     crumb:['Home','Stationery','Pens'],
     v2:{
-      seo:{urlSlug:'bic-triumph-537r-ultra-fine-pen',
+      seo:{urlSlug:'bic-triumph-537r-ballpoint-pen',
         metaTitle:'BIC Triumph 537R .5mm Pen | PromotionPros',
-        metaDescription:'Custom BIC Triumph 537R pen with .5mm ultra-fine point and smooth ink system. Order in bulk for conferences and office supplies.'},
+        metaDescription:'Custom BIC Triumph 537R ballpoint with a .5 mm ultra-fine point, screen-printed on the cap with no setup fee. Order branded in bulk.'},
       rephrased_title:'BIC Triumph 537R .5mm Ultra-Fine Point Pen',
-      rephrased_short_description:'BIC Triumph 537R pen with a .5mm ultra-fine point and super-smooth ink system for effortless writing, featuring a modern two-piece design.',
-      block1_prose:'The BIC Triumph 537R pen combines a .5mm ultra-fine point with a super-smooth ink system for precise, effortless writing. Its modern two-piece design and tungsten carbide ball ensure consistent, skip-free lines on various paper types. Ideal for conference swag, office supplies, and client gifts where a reliable, professional writing instrument is essential.',
-      block2_bullets:[
-        '**Ultra-Fine Point:** .5mm tip with tungsten carbide ball delivers precise, consistent lines for detailed writing tasks.',
-        '**Smooth Ink System:** Super-smooth ink formulation provides an effortless writing experience with minimal pressure.',
-        '**Modern Two-Piece Design:** Professional appearance with a cap that protects the tip and prevents drying out.',
-        '**Screen Print Decoration:** Cap imprint area available for custom branding with no setup charge.',
-        '**Bulk Order Ready:** Minimum order quantity of 150 units, with volume discounts for larger programs.'],
+      rephrased_short_description:'BIC Triumph 537R ballpoint pen with a .5 mm ultra-fine point and a smooth ink system, with a cap imprint zone for custom branding.',
+      overview:'The BIC Triumph 537R is a two-piece ballpoint pen with a .5 mm ultra-fine point and a tungsten carbide ball. A cap covers the tip when it is not in use.',
+      highlights:[
+        {label:'No Setup Fee',benefit:'The cap screen-prints your logo at no setup charge, keeping the per-unit cost down on a bulk run.'},
+        {label:'Tungsten Carbide Tip',benefit:'The .5 mm ultra-fine point writes a clean, fine line for detailed notes.'}],
       block3_imprint_facts:'Method: Screen Print · Locations: Cap · Setup: $0.00',
-      rephrased_long_description:'The BIC Triumph 537R pen combines a .5mm ultra-fine point with a super-smooth ink system for precise, effortless writing. Its modern two-piece design and tungsten carbide ball ensure consistent, skip-free lines on various paper types. The cap protects the tip and provides a screen print area for custom branding with no setup charge. Ideal for conference swag, office supplies, and client gifts, this pen is available in bulk with a minimum order of 150 units and volume discounts for larger programs.',
-      bullet_points_suggested:[
-        'Tip — .5mm ultra-fine point with tungsten carbide ball for precision',
-        'Ink — super-smooth ink system for effortless writing',
-        'Design — modern two-piece construction with protective cap',
-        'Best For — conference giveaways, office supplies, client gifts',
-        'MOQ — 150 units with volume discounts available'],
-      icon_cards:[
-        {label:'.5mm Ultra-Fine Point',micro:'Tungsten carbide ball tip delivers precise, consistent lines for detailed writing tasks.'},
-        {label:'Smooth Ink System',micro:'Super-smooth ink formulation provides an effortless writing experience with minimal pressure.'},
-        {label:'Screen Print Decoration',micro:'Cap imprint area available for custom branding with no setup charge.'},
-        {label:'MOQ 150 Units',micro:'Bulk orders start at 150 units with volume discounts for larger programs.'}]
+      rephrased_long_description:'The BIC Triumph 537R is a two-piece ballpoint pen with a .5 mm ultra-fine point and a tungsten carbide ball. A smooth ink system lays down a clean, fine line for detailed writing, and a cap covers the tip when it is not in use. The cap also provides a screen-print area for a custom logo.'
     },
     chrome:{
       price:'$0.89', priceEa:'/ ea at 300', tiers:'150 → $1.05 · 300 → $0.89 · 500 → $0.79 · 1000 → $0.69 each',
@@ -921,29 +891,24 @@ function closeConfigurator(){ document.getElementById('cfgOverlay').classList.re
 function sections(p){
   const v=p.v2, c=p.chrome;
 
-  // Description: prose + benefit bullets (**bold** -> <strong>) + Product Highlights (icon_cards)
-  const descBody =
-    `<p class="prose">${esc(v.block1_prose)}</p>
-     <ul class="flist">${v.block2_bullets.map(b=>`<li>${mdBold(b)}</li>`).join('')}</ul>
-     <div class="highlights">${v.icon_cards.map(card=>`
+  // Highlights (LEAD) — v2.5 merged {label, benefit} cards (was block2_bullets + bullet_points_suggested + icon_cards)
+  const hlBody = `<div class="highlights">${v.highlights.map(h=>`
         <div class="hl">
           <svg class="hi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></svg>
-          <b>${esc(card.label)}</b><p>${esc(card.micro)}</p>
+          <b>${esc(h.label)}</b><p>${esc(h.benefit)}</p>
         </div>`).join('')}</div>`;
 
-  // Highlights strip (bullet_points_suggested) — plain text, split "Label — text" into bold label
-  const stripBody = `<ul class="hstrip">${v.bullet_points_suggested.map(b=>{
-    const m=b.match(/^([^—]+—)\s*(.*)$/);
-    return m ? `<li><b>${esc(m[1])}</b> ${esc(m[2])}</li>` : `<li>${esc(b)}</li>`;
-  }).join('')}</ul>`;
+  // Overview — short supporting prose (was block1_prose), rendered after Highlights
+  const overviewBody = `<p class="prose">${esc(v.overview)}</p>`;
 
   const specsBody = `<table class="spectable">${c.specs.map(r=>`<tr><td>${esc(r[0])}</td><td>${esc(r[1])}</td></tr>`).join('')}</table>`;
 
+  // v2.5 locked order: Highlights -> Overview -> Specifications -> Decoration. (At a Glance quick-fact tiles omitted — not spec-dense.)
   const secs = [
-    { title:'Description', open:true, body:descBody },
-    { title:'Highlights', open:true, body:stripBody },
-    { title:'Decoration &amp; Imprint Options', badge:decoBadge(p), open:true, body:decoBody(p) },
-    { title:'Specifications', open:true, body:specsBody }
+    { title:'Highlights', open:true, body:hlBody },
+    { title:'Overview', open:true, body:overviewBody },
+    { title:'Specifications', open:true, body:specsBody },
+    { title:'Decoration &amp; Imprint Options', badge:decoBadge(p), open:true, body:decoBody(p) }
   ];
 
   // Sizing & Fit only for apparel (S608) — real per-category adaptation
@@ -1009,13 +974,35 @@ function buildSeoPanel(p){
     </div>`;
 }
 
+/* ---------- held state (products excluded pending decoration-method feed data) ---------- */
+function renderHeld(p){
+  document.getElementById('galIco').innerHTML = ICONS[p.icon]||'';
+  document.getElementById('galScale').textContent = '';
+  document.getElementById('galThumbs').innerHTML = '';
+  document.getElementById('sections').innerHTML = `
+    <div class="held-banner">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg>
+      <div>
+        <b>Copy held — pending decoration-method data in the feed</b>
+        <p>${esc(p.case.replace(/ — held$/,''))} · ${esc(p.tab.replace(/ \(held[^)]*\)$/,''))}. This product's feed carries no decoration method, so a v2.5 page would leave the buyer's first question &mdash; how the logo goes on &mdash; unanswered (the copy check showed buyers bounce from exactly this). Per the build decision it stays held until the method / imprint data lands in the feed (Boris Ask 3). The data-complete products (drinkware, novelty, pen) are populated and switchable in the bar above.</p>
+      </div>
+    </div>`;
+  document.getElementById('buybox').innerHTML = `
+    <div class="held-side">
+      <div class="lbl">On hold</div>
+      <p>Excluded from the v2.5 copy build pending feed-data enrichment (decoration method). See the note on the left.</p>
+    </div>`;
+  document.getElementById('seoPanel').innerHTML = '';
+}
+
 /* ---------- render ---------- */
 function render(){
   const p = PRODUCTS[CUR];
   document.title = p.v2.seo.metaTitle;
-  document.getElementById('metaDescTag').setAttribute('content', p.v2.seo.metaDescription);
+  document.getElementById('metaDescTag').setAttribute('content', p.v2.seo.metaDescription||'');
   buildPnav();
   document.getElementById('crumb').innerHTML = buildCrumb(p);
+  if(p.held){ renderHeld(p); return; }
   buildGallery(p); buildBuybox(p); buildSections(p); buildSeoPanel(p);
 }
 
@@ -1054,7 +1041,7 @@ document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeConfigurator(
 (function init(){
   const h=location.hash.replace('#','');
   const idx=PRODUCTS.findIndex(p=>p.id===h);
-  if(idx>=0) CUR=idx;
+  CUR = idx>=0 ? idx : PRODUCTS.findIndex(p=>!p.held);  // default to first data-complete (non-held) product
   render();
 })();
 </script>
