@@ -1,0 +1,871 @@
+<!-- Design library: design/prototypes/2026-05-25-pdp-content-full (iteration; real v2 content) -->
+<!--
+  PDP populated with REAL v2-generated content — PromotionPros
+  Iteration on design/prototypes/2026-05-25-pdp-content-full/index.html.
+  Design, CSS tokens, chrome, and section structure are REUSED verbatim from the base.
+  Changes vs base:
+    - Sticky top PRODUCT NAVBAR with 5 tabs (one per product / demonstrated case). Click swaps the rendered PDP.
+    - The "Content blueprint" view is removed; this is the filled view only, driven by real v2 data held in JS.
+    - New collapsible "SEO / Google" annotation panel showing metaTitle, metaDescription and the
+      Google Shopping (rephrased_long_description) prose — content NOT shown in the main PDP body.
+    - block3_imprint_facts parsed into a per-method spec list; null cases (S608 apparel, 7127 award)
+      render a graceful empty/not-yet state — no invented imprint specs.
+  v2 field -> PDP slot:
+    rephrased_title -> H1 · rephrased_short_description -> subtitle · pdp_long_description.block1_prose -> Description prose ·
+    block2_bullets -> benefit bullets (**bold** -> <strong>) · block3_imprint_facts -> Decoration spec list (or empty state) ·
+    bullet_points_suggested -> Highlights strip · icon_cards -> quick-fact tiles · seo.* + rephrased_long_description -> SEO panel.
+  Commerce chrome (price tiers, swatches, qty/CTA, specs table, sizing, reviews, Q&A, cross-sell) is REPRESENTATIVE
+  placeholder, lightly adapted per category — NOT from v2, NOT fabricated precise specs.
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BIC Triumph 537R .5mm Pen | PromotionPros</title>
+<meta name="description" id="metaDescTag" content="">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#001542;--navy-h:#001028;--orange:#FE5000;--orange-h:#d44200;
+  --ink:#111;--text:#525252;--muted:#999;--border:#e5e5e5;--gray:#f5f5f5;
+  --success:#22a722;--tier:#fff3ec;--maxw:1200px;
+}
+body{font-family:'Lato',sans-serif;font-size:16px;color:var(--text);line-height:1.5;background:#fff}
+h1,h2,h3,h4{color:var(--ink);line-height:1.2}
+
+/* DEMO BAR */
+.demo-bar{background:var(--navy);color:#fff;display:flex;align-items:center;gap:14px;padding:9px 22px;flex-wrap:wrap;position:sticky;top:0;z-index:70}
+.demo-bar .tag{font-size:11px;font-weight:900;letter-spacing:.12em;background:var(--orange);padding:4px 9px;border-radius:3px}
+.demo-bar .lbl{font-size:12.5px;color:#9fb0d4}
+.demo-hint{font-size:12px;color:#9fb0d4;margin-left:auto}
+
+/* PRODUCT NAVBAR (the new structural addition) */
+.pnav{background:#fff;border-bottom:2px solid var(--border);position:sticky;top:40px;z-index:65;box-shadow:0 1px 6px rgba(0,0,0,.05)}
+.pnav-inner{display:flex;max-width:var(--maxw);margin:0 auto;padding:0 20px;gap:0;overflow-x:auto}
+.pnav button{flex:1 0 auto;background:none;border:0;border-bottom:3px solid transparent;font-family:inherit;cursor:pointer;
+  padding:11px 16px;text-align:left;min-width:150px;white-space:nowrap}
+.pnav button:hover{background:var(--gray)}
+.pnav button.on{border-bottom-color:var(--orange)}
+.pnav .case{display:block;font-size:11px;font-weight:900;letter-spacing:.07em;text-transform:uppercase;color:var(--orange)}
+.pnav button.on .case{color:var(--orange-h)}
+.pnav .pname{display:block;font-size:13.5px;font-weight:700;color:var(--text);margin-top:2px}
+.pnav button.on .pname{color:var(--ink)}
+
+/* HEADER / NAV / FOOTER (chrome) */
+.site-header{background:#fff;border-bottom:1px solid var(--border);padding:12px 0}
+.header-inner{display:flex;align-items:center;gap:20px;max-width:var(--maxw);margin:0 auto;padding:0 20px}
+.site-logo{font-weight:900;font-size:23px;color:var(--navy);text-decoration:none}
+.site-logo b{color:var(--orange)}
+.header-search{flex:1;display:flex}
+.header-search input{flex:1;height:42px;border:1px solid var(--border);border-right:none;border-radius:50rem 0 0 50rem;padding:0 18px;font-family:inherit;font-size:14px;outline:none}
+.search-btn{width:50px;height:42px;background:var(--navy);border:none;color:#fff;border-radius:0 50rem 50rem 0;cursor:pointer}
+.header-actions{display:flex;gap:18px;font-size:12px}
+.hdr-link{color:var(--text);text-decoration:none;display:flex;flex-direction:column;align-items:center;gap:2px}
+.hdr-icon{font-size:19px}
+.site-nav{background:#fff;border-bottom:2px solid var(--border)}
+.nav-inner{display:flex;max-width:var(--maxw);margin:0 auto;padding:0 20px}
+.nav-allcat{background:var(--navy);color:#fff;height:50px;padding:0 22px;display:flex;align-items:center;gap:8px;font-weight:700;font-size:14px;text-decoration:none}
+.nav-links{display:flex;align-items:center;list-style:none;overflow:hidden}
+.nav-links li a{display:block;padding:13px 18px;font-size:15px;color:var(--ink);text-decoration:none;white-space:nowrap}
+.nav-links li a.hot{color:var(--orange);font-weight:700}
+.site-footer{background:var(--navy);color:#c7d2e8;margin-top:44px;padding:30px 0}
+.footer-inner{max-width:var(--maxw);margin:0 auto;padding:0 20px;display:flex;justify-content:space-between;gap:30px;flex-wrap:wrap}
+.footer-news b{color:#fff;font-size:16px;display:block;margin-bottom:8px}
+.footer-news input{height:40px;border:0;padding:0 14px;width:230px;font-family:inherit}
+.footer-news button{height:40px;background:var(--orange);color:#fff;border:0;padding:0 18px;font-weight:700;cursor:pointer;font-family:inherit}
+.footer-cols{display:flex;gap:40px;font-size:13px}
+.footer-cols b{color:#fff;display:block;margin-bottom:8px}
+.footer-cols a{color:#c7d2e8;text-decoration:none;display:block;padding:2px 0}
+
+/* LAYOUT */
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 20px}
+.breadcrumb-bar{background:var(--gray);padding:9px 0;border-bottom:1px solid var(--border)}
+.bc{font-size:13px;color:var(--text)}
+.bc a{color:var(--text);text-decoration:none}
+.product-section{display:grid;grid-template-columns:1fr 430px;gap:40px;align-items:start;margin-top:26px}
+.left-col{min-width:0}
+
+/* gallery */
+.gallery-main{position:relative;border:1px solid var(--border);aspect-ratio:1/1;display:grid;place-items:center;background:var(--gray);overflow:hidden}
+.gallery-main .ico{width:48%;height:48%;color:var(--navy)}
+.gallery-main .scale-note{position:absolute;bottom:10px;left:10px;background:rgba(255,255,255,.92);font-size:11px;font-weight:700;color:var(--text);padding:4px 9px;border-radius:50rem}
+.gallery-thumbs{display:flex;gap:8px;margin-top:10px}
+.gallery-thumbs .t{width:66px;height:66px;border:1px solid var(--border);background:var(--gray);display:grid;place-items:center;font-size:9px;color:var(--muted);text-align:center;padding:3px}
+.gallery-thumbs .t.on{border-color:var(--orange)}
+
+/* buy box */
+.bb-title{font-size:25px;font-weight:900;color:var(--ink);margin-bottom:8px}
+.bb-sub{font-size:14.5px;color:var(--text);margin-bottom:12px;line-height:1.5}
+.bb-rating{display:flex;align-items:center;gap:8px;font-size:13.5px;margin-bottom:16px}
+.stars{color:var(--orange);letter-spacing:1px}
+.bb-rating a{color:var(--navy);text-decoration:none;font-weight:700}
+.bb-rating a:hover{text-decoration:underline}
+.bb-block{border-top:1px solid var(--border);padding:14px 0}
+.bb-price{display:flex;align-items:baseline;gap:10px}
+.bb-price .amt{font-size:30px;font-weight:900;color:var(--orange)}
+.bb-price .ea{font-size:14px;color:var(--text);font-weight:700}
+.bb-perunit{font-size:12.5px;color:var(--text);margin-top:4px}
+.fulfil{font-size:13.5px;color:var(--ink)}
+.fulfil .row{display:flex;gap:8px;align-items:flex-start;margin-bottom:5px}
+.fulfil svg{width:15px;height:15px;color:var(--navy);flex:none;margin-top:2px}
+.fulfil b{color:var(--ink)}
+.fulfil .hi{color:var(--success);font-weight:700}
+.lbl{font-size:12px;font-weight:900;letter-spacing:.06em;text-transform:uppercase;color:var(--navy);margin-bottom:9px}
+.swatches{display:flex;gap:9px;flex-wrap:wrap}
+.swatch{width:36px;height:36px;border-radius:50%;border:1px solid rgba(0,0,0,.2);cursor:pointer}
+.swatch.on{box-shadow:0 0 0 3px #fff,0 0 0 5px var(--orange)}
+.qty-cta{display:flex;gap:10px;align-items:center;margin-top:6px}
+.qty-input{width:84px;height:46px;border:1px solid var(--border);text-align:center;font-family:inherit;font-size:16px;font-weight:700;color:var(--ink)}
+.btn-cta{flex:1;height:46px;background:var(--orange);color:#fff;border:0;font-family:inherit;font-weight:900;font-size:15px;text-transform:uppercase;letter-spacing:.02em;cursor:pointer}
+.btn-cta:hover{background:var(--orange-h)}
+.trust-row{display:flex;gap:14px;flex-wrap:wrap;margin-top:12px;font-size:12px;color:var(--text);font-weight:700}
+.trust-row span{display:flex;align-items:center;gap:5px}
+.trust-row svg{width:14px;height:14px;color:var(--navy)}
+
+/* stacked sections */
+.lc-sections{margin-top:30px}
+.psec{border-top:1px solid var(--border)}
+.psec:last-child{border-bottom:1px solid var(--border)}
+.psec-hdr{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:16px 2px;cursor:pointer;background:none;border:0;width:100%;font-family:inherit;text-align:left;user-select:none}
+.psec-hdr:hover .psec-title{color:var(--orange)}
+.psec-title{font-size:18px;font-weight:900;color:var(--ink);display:flex;align-items:center;gap:9px}
+.psec-title .badge{background:var(--orange);color:#fff;font-size:11px;font-weight:900;padding:1px 9px;border-radius:50rem}
+.psec-chev{color:var(--orange);transition:transform .2s ease}
+.psec:not(.open) .psec-chev{transform:rotate(-90deg)}
+.psec-body{display:none;padding:0 2px 24px}
+.psec.open .psec-body{display:block}
+
+/* content bits */
+.prose{font-size:14.5px;color:var(--text);line-height:1.7;margin-bottom:14px}
+.flist{list-style:none;display:flex;flex-direction:column;gap:8px;margin-bottom:8px}
+.flist li{font-size:14px;padding-left:24px;position:relative}
+.flist li::before{content:"";position:absolute;left:0;top:7px;width:9px;height:9px;background:var(--orange);border-radius:2px}
+.flist b,.flist strong{color:var(--ink)}
+.highlights{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:14px}
+.hl{border:1px solid var(--border);padding:14px;border-radius:6px}
+.hl .hi{width:30px;height:30px;color:var(--navy);margin-bottom:8px}
+.hl b{display:block;font-size:14px;color:var(--ink);margin-bottom:4px}
+.hl p{font-size:12.5px;color:var(--text);line-height:1.5}
+
+/* Highlights strip (bullet_points_suggested) */
+.hstrip{list-style:none;display:flex;flex-direction:column;gap:7px;margin:0 0 4px}
+.hstrip li{font-size:13.5px;color:var(--text);padding-left:22px;position:relative;line-height:1.5}
+.hstrip li::before{content:"";position:absolute;left:0;top:6px;width:8px;height:8px;background:var(--navy);border-radius:50%}
+.hstrip b{color:var(--ink)}
+
+.spectable{width:100%;border-collapse:collapse;max-width:620px}
+.spectable td{padding:9px 14px;border-bottom:1px solid var(--border);font-size:14px}
+.spectable tr:nth-child(even){background:var(--gray)}
+.spectable td:first-child{color:var(--text);font-weight:700;width:40%}
+.spectable td:last-child{color:var(--ink);font-weight:700}
+.dim-tip{border-bottom:1px dotted var(--muted);cursor:help}
+
+/* decoration / imprint facts (parsed from block3_imprint_facts) */
+.deco-mini{display:flex;flex-direction:column;gap:10px;max-width:660px}
+.deco-card{border:1px solid var(--border);border-radius:6px;padding:14px 16px}
+.deco-card .dn{font-weight:900;color:var(--navy);font-size:14.5px;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.deco-card .dn .mtag{background:var(--tier);color:var(--orange-h);font-size:10.5px;font-weight:900;letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border-radius:50rem}
+/* left main copy + right decision aside */
+.deco-grid{display:grid;grid-template-columns:1fr 250px;gap:18px;align-items:start}
+.deco-main .deco-desc{font-size:13.5px;color:var(--text);line-height:1.65;margin-bottom:12px}
+.deco-main .deco-desc p{margin-bottom:8px}
+.deco-main .deco-desc p:last-child{margin-bottom:0}
+.deco-specs{display:flex;flex-wrap:wrap;gap:8px 10px}
+.deco-spec{font-size:12.5px;color:var(--text);background:var(--gray);border:1px solid var(--border);border-radius:5px;padding:5px 10px}
+.deco-spec b{color:var(--ink);font-weight:700}
+.deco-aside{background:var(--tier);border:1px solid #ffd9c4;border-radius:6px;padding:12px 13px}
+.deco-aside .at{font-size:11px;font-weight:900;letter-spacing:.06em;text-transform:uppercase;color:var(--orange-h);margin-bottom:7px;display:flex;align-items:center;gap:6px}
+.deco-aside .at svg{width:14px;height:14px}
+.deco-aside .as{font-size:13px;color:var(--ink);font-weight:700;line-height:1.5;margin-bottom:8px}
+.deco-aside .ah{font-size:12.5px;color:var(--text);line-height:1.6}
+.deco-empty{border:1px dashed var(--border);border-radius:6px;padding:16px;background:var(--gray);max-width:660px;display:flex;gap:12px;align-items:flex-start}
+.deco-empty svg{width:22px;height:22px;color:var(--navy);flex:none;margin-top:1px}
+.deco-empty b{display:block;color:var(--ink);font-size:14px;margin-bottom:3px}
+.deco-empty p{font-size:13px;color:var(--text);line-height:1.5}
+.deco-foot{font-size:12.5px;color:var(--muted);margin-top:9px}
+
+.ship-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;max-width:640px}
+.ship-card{border:1px solid var(--border);border-radius:6px;padding:13px}
+.ship-card b{display:block;color:var(--ink);font-size:13px;margin-bottom:5px}
+.ship-card p{font-size:13px;color:var(--text);line-height:1.5}
+
+/* reviews */
+.rev-top{display:flex;gap:34px;flex-wrap:wrap;align-items:flex-start;margin-bottom:18px;max-width:680px}
+.rev-score{text-align:center}
+.rev-score .big{font-size:44px;font-weight:900;color:var(--ink);line-height:1}
+.rev-score .st{color:var(--orange);font-size:18px}
+.rev-score .ct{font-size:12.5px;color:var(--text);margin-top:3px}
+.rev-hist{flex:1;min-width:240px}
+.hist-row{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text);margin-bottom:3px;cursor:pointer}
+.hist-row .bar{flex:1;height:9px;background:var(--gray);border-radius:5px;overflow:hidden}
+.hist-row .fill{height:100%;background:var(--orange)}
+.kw-filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.kw{font-size:12.5px;font-weight:700;color:var(--navy);background:var(--gray);border:1px solid var(--border);border-radius:50rem;padding:4px 12px;cursor:pointer}
+.kw:hover{border-color:var(--orange);color:var(--orange)}
+.review{border-top:1px solid var(--border);padding:14px 0;max-width:680px}
+.review .rh{display:flex;justify-content:space-between;font-size:12.5px;color:var(--text);margin-bottom:4px}
+.review .rs{color:var(--orange)}
+.review .rt{font-size:14px;color:var(--ink);line-height:1.55}
+.review .rn{font-weight:700;color:var(--ink)}
+.load-more{margin-top:14px;background:none;border:1px solid var(--navy);color:var(--navy);font-family:inherit;font-weight:700;font-size:14px;padding:9px 20px;cursor:pointer}
+.load-more:hover{background:var(--navy);color:#fff}
+
+/* qa */
+.qa{border-top:1px solid var(--border);padding:13px 0;max-width:680px}
+.qa .q{font-weight:900;color:var(--navy);font-size:14px;margin-bottom:4px}
+.qa .q::before{content:"Q  ";color:var(--orange)}
+.qa .a{font-size:14px;color:var(--text);line-height:1.55}
+.qa .a::before{content:"A  ";color:var(--ink);font-weight:900}
+.qa .src{font-size:11.5px;color:var(--muted);margin-top:3px}
+
+/* cross-sell */
+.xsell{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.xcard{border:1px solid var(--border);border-radius:6px;overflow:hidden}
+.xcard .xi{aspect-ratio:1/1;background:var(--gray);display:grid;place-items:center;color:var(--navy)}
+.xcard .xi svg{width:46%;height:46%}
+.xcard .xb{padding:10px}
+.xcard .xn{font-size:13px;font-weight:700;color:var(--ink);line-height:1.3}
+.xcard .xp{font-size:13px;color:var(--orange);font-weight:900;margin-top:4px}
+.xcard .xr{font-size:11.5px;color:var(--text);margin-top:2px}
+.xsell-foot{margin-top:14px;font-size:13.5px}
+.xsell-foot a{color:var(--orange);font-weight:700;text-decoration:none}
+
+/* SEO / Google annotation panel (reviewer aid — not part of the live PDP body) */
+.seo-panel{max-width:760px;margin:30px auto 0;border:1px dashed #cbb892;background:#fbf7ee;border-radius:6px}
+.seo-hdr{display:flex;align-items:center;gap:9px;padding:13px 16px;cursor:pointer;background:none;border:0;width:100%;font-family:inherit;text-align:left;color:#5a5346;font-weight:900;font-size:14px}
+.seo-hdr .stag{font-size:10.5px;font-weight:900;letter-spacing:.08em;background:#cbb892;color:#3d3526;padding:2px 8px;border-radius:50rem}
+.seo-hdr .schev{margin-left:auto;color:#a8895a;transition:transform .2s ease}
+.seo-panel:not(.open) .schev{transform:rotate(-90deg)}
+.seo-body{display:none;padding:0 16px 16px}
+.seo-panel.open .seo-body{display:block}
+.seo-field{margin-top:14px}
+.seo-field .fl{font-size:11px;font-weight:900;letter-spacing:.06em;text-transform:uppercase;color:#a8895a;margin-bottom:4px}
+.seo-field .fv{font-size:13.5px;color:#5a4a33;line-height:1.55;font-family:ui-monospace,Menlo,Consolas,monospace;background:#fff;border:1px solid #e7dcc4;border-radius:4px;padding:8px 11px}
+/* mock Google SERP snippet */
+.serp{background:#fff;border:1px solid #e7dcc4;border-radius:6px;padding:12px 14px;margin-top:6px;font-family:Arial,sans-serif}
+.serp .surl{font-size:12.5px;color:#202124}
+.serp .surl .dom{color:#5f6368}
+.serp .stit{font-size:18px;color:#1a0dab;line-height:1.3;margin:2px 0 3px}
+.serp .sdesc{font-size:13px;color:#4d5156;line-height:1.5}
+
+@media (max-width:980px){
+  .product-section{grid-template-columns:1fr;gap:26px}
+  .highlights,.xsell{grid-template-columns:repeat(2,1fr)}
+  .ship-grid{grid-template-columns:1fr}
+  .deco-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<div class="demo-bar">
+  <span class="tag">PROTOTYPE</span>
+  <span class="lbl">PDP populated with real v2-generated content — switch products in the bar below</span>
+  <span class="demo-hint">v2 content = title / subtitle / description / decoration facts / highlights / quick-facts / SEO. Commerce chrome is representative.</span>
+</div>
+
+<!-- PRODUCT NAVBAR — 5 tabs, one per product / demonstrated case -->
+<nav class="pnav"><div class="pnav-inner" id="pnav"></div></nav>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="#" class="site-logo">Promotion<b>Pros</b></a>
+    <div class="header-search"><input placeholder="Search 500,000+ promo products..."><button class="search-btn">&#128269;</button></div>
+    <div class="header-actions">
+      <a href="#" class="hdr-link"><span class="hdr-icon">&#128222;</span><span>Call</span></a>
+      <a href="#" class="hdr-link"><span class="hdr-icon">&#128100;</span><span>Account</span></a>
+      <a href="#" class="hdr-link"><span class="hdr-icon">&#128722;</span><span>Cart</span></a>
+    </div>
+  </div>
+</header>
+<nav class="site-nav">
+  <div class="nav-inner">
+    <a href="#" class="nav-allcat">&#9776;&ensp;All Categories</a>
+    <ul class="nav-links">
+      <li><a href="#">Budget Buys</a></li><li><a href="#">Apparel</a></li><li><a href="#">Bags</a></li>
+      <li><a href="#">Drinkware</a></li><li><a href="#">Office &amp; Awards</a></li><li><a href="#">Stationery</a></li>
+      <li><a href="#" class="hot">Hot Products</a></li><li><a href="#" class="hot">On Sale</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="breadcrumb-bar"><div class="wrap"><div class="bc" id="crumb"></div></div></div>
+
+<div class="wrap">
+  <div class="product-section">
+    <!-- LEFT: gallery + sections -->
+    <div class="left-col">
+      <div class="gallery-main">
+        <svg class="ico" id="galIco" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"></svg>
+        <span class="scale-note" id="galScale"></span>
+      </div>
+      <div class="gallery-thumbs" id="galThumbs"></div>
+      <div class="lc-sections" id="sections"></div>
+    </div>
+    <!-- RIGHT: buy box -->
+    <div class="buybox" id="buybox"></div>
+  </div>
+
+  <!-- SEO / Google annotation panel (reviewer aid) -->
+  <div class="seo-panel" id="seoPanel"></div>
+</div>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-news"><b>Get weekly promotional ideas for your business</b><form onsubmit="return false"><input placeholder="Enter your email..."><button>Subscribe</button></form></div>
+    <div class="footer-cols">
+      <div><b>Information</b><a href="#">About Us</a><a href="#">Blog</a></div>
+      <div><b>Customer Service</b><a href="#">Contact</a><a href="#">Art Guidelines</a></div>
+      <div><b>My Account</b><a href="#">Orders</a><a href="#">Cart</a></div>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ============================================================
+   REAL v2 CONTENT — copied verbatim from
+   _temporary/afk-enrichment/compare/v2/<mpn>.json -> result
+   Plus REPRESENTATIVE (non-v2) commerce chrome per product.
+   ============================================================ */
+const PRODUCTS = [
+  {
+    id:'S608', case:'Apparel', tab:'Port Authority Polo', icon:'shirt',
+    crumb:['Home','Apparel','Woven Shirts'],
+    v2:{
+      seo:{urlSlug:'port-authority-long-sleeve-easy-care-shirt',
+        metaTitle:'Port Authority Long Sleeve Easy Care Shirt | PromotionPros',
+        metaDescription:'Custom-embroidered Port Authority long sleeve shirt in wrinkle-resistant 55/45 cotton/poly. Request a quote for bulk uniform and staff orders.'},
+      rephrased_title:'Port Authority 4.5 oz Cotton/Poly Long Sleeve Easy Care Shirt',
+      rephrased_short_description:'Wrinkle-resistant long sleeve shirt in 4.5-ounce 55/45 cotton/poly with a button-down collar and left chest pocket, built for wash-and-wear workdays.',
+      block1_prose:'Made from a 4.5-ounce 55/45 cotton/poly blend, this Port Authority long sleeve shirt combines breathable comfort with wrinkle resistance that holds up through the workday. The fabric is engineered for easy care, so it comes out of the dryer ready to wear without ironing. A button-down collar, dyed-to-match buttons, and a left chest pocket keep the look professional, while the back box pleat and rounded adjustable cuffs add range of motion for active roles.',
+      block2_bullets:[
+        '**Wrinkle-Resistant Fabric:** 4.5-ounce 55/45 cotton/poly blend resists creasing and maintains a crisp appearance through long shifts and frequent laundering.',
+        '**Button-Down Collar:** Secured collar points stay in place for a polished look, even without collar stays.',
+        '**Functional Pocketing:** Left chest pocket provides quick-access storage for pens, notepads, or small tools.',
+        '**Adjustable Cuffs:** Rounded, adjustable cuffs let wearers dial in the fit for comfort and a clean silhouette.',
+        '**Easy-Care Construction:** Machine-washable fabric follows standard laundry habits, simplifying uniform rollouts and daily maintenance.'],
+      block3_imprint_facts:null,
+      rephrased_long_description:'Made from a 4.5-ounce 55/45 cotton/poly blend, this Port Authority long sleeve shirt combines breathable comfort with wrinkle resistance that holds up through the workday. The fabric is engineered for easy care, so it comes out of the dryer ready to wear without ironing. A button-down collar, dyed-to-match buttons, and a left chest pocket keep the look professional, while the back box pleat and rounded adjustable cuffs add range of motion for active roles. The wrinkle-resistant fabric resists creasing and maintains a crisp appearance through long shifts and frequent laundering, and the secured collar points stay in place for a polished look. A left chest pocket provides quick-access storage, and the adjustable cuffs let wearers dial in the fit. Machine-washable construction simplifies uniform rollouts and daily maintenance.',
+      bullet_points_suggested:[
+        'Fabric — 4.5 oz 55/45 cotton/poly blend; wrinkle-resistant and machine-washable',
+        'Design — button-down collar, dyed-to-match buttons, left chest pocket',
+        'Fit — back box pleat and rounded adjustable cuffs for ease of movement',
+        'Best For — employee uniforms, corporate events, customer-facing teams',
+        'Care — easy-care construction; no ironing needed out of the dryer'],
+      icon_cards:[
+        {label:'Wrinkle-Resistant Blend',micro:'4.5-ounce 55/45 cotton/poly fabric resists creasing and maintains a crisp appearance through long shifts.'},
+        {label:'Button-Down Collar',micro:'Secured collar points stay in place for a polished look without collar stays.'},
+        {label:'Left Chest Pocket',micro:'Provides quick-access storage for pens, notepads, or small tools.'},
+        {label:'Easy Care',micro:'Machine-washable fabric comes out of the dryer ready to wear, simplifying uniform maintenance.'}]
+    },
+    chrome:{
+      price:'$18.40', priceEa:'/ ea at 36', tiers:'12 → $21.50 · 36 → $18.40 · 72 → $16.95 · 144 → $15.60 each',
+      qty:'36',
+      swatches:[['Navy','1f2a44',1],['Black','1a1a1a'],['Stone','d6cdb8'],['White','f4f4f2'],['Burgundy','6e1f2b'],['Steel Grey','8a929b']],
+      swatchLabel:'Navy',
+      lead:'Production: 5 business days after proof approval',
+      deliver:'Arrives by Tue, Jun 23 with standard shipping',
+      sizing:'Adult sizes XS–4XL. This is a regular fit; size up for layering. See the measurement chart for chest and body-length specs.',
+      sizingChart:[['XS','32–34"'],['S','35–37"'],['M','38–40"'],['L','41–43"'],['XL','44–46"'],['2XL','47–49"'],['3XL','50–53"'],['4XL','54–57"']],
+      specs:[['Fabric','4.5 oz, 55/45 cotton/poly blend'],['Collar','Button-down, dyed-to-match buttons'],['Pocket','Left chest'],['Cuffs','Rounded, adjustable'],['Back','Box pleat'],['Fit','Regular'],['Sizes','XS–4XL'],['Care','Machine wash, easy-care']],
+      reviewAvg:'4.7', reviewCount:'94', reviewDist:[['5',81],['4',13],['3',3],['2',2],['1',1]],
+      kw:['Fit (38)','Fabric quality (29)','Wrinkle resistance (24)','Embroidery (17)','Value (12)'],
+      reviews:[
+        ['★★★★★','Renee P.','May 2026','Ordered 80 for our front-desk staff with embroidered logos. Held up to daily washing and still looks crisp. Sizing ran true.'],
+        ['★★★★☆','Carlos D.','Apr 2026','Good easy-care shirt. The cotton/poly blend really does resist wrinkles. Wish it came in tall sizes.']],
+      qa:[
+        ['Can you embroider our logo on the left chest?','Yes — left chest is the standard embroidery location. Add your logo in the Customize step; additional locations are available with their own setup charge.'],
+        ['Do these run true to size?','They run true to a regular fit. For layering or a relaxed look, we recommend sizing up. See the measurement chart in Sizing & Fit.'],
+        ['Is there a tall option?','This style is offered in XS–4XL regular. For tall sizing, ask your rep about related Port Authority styles.']],
+      xsell:[['Port Authority Short Sleeve Easy Care','$15.20','4.8 (260)'],['Silk Touch Performance Polo','$16.90','4.9 (412)'],['Ladies Long Sleeve Easy Care','$18.40','4.7 (88)'],['Core Soft Shell Jacket','$42.00','4.8 (54)']],
+      xsellCat:'Woven Shirts'
+    }
+  },
+  {
+    id:'B726', case:'Drinkware', tab:'Tumbler (multi-method)', icon:'cup',
+    crumb:['Home','Drinkware','Tumblers'],
+    v2:{
+      seo:{urlSlug:'20-oz-padova-series-tumbler',
+        metaTitle:'20 oz Padova Series Tumbler | PromotionPros',
+        metaDescription:'Custom 20 oz double-wall stainless steel tumbler with copper vacuum insulation and powder coat finish. Order in bulk for corporate gifts and events.'},
+      rephrased_title:'20 oz Stainless Steel Double-Wall Vacuum Tumbler',
+      rephrased_short_description:'20 oz double-wall stainless steel tumbler with copper vacuum insulation, powder coat finish, and a stainless steel straw with silicone sipper, ready for custom decoration.',
+      block1_prose:'Constructed from double-wall stainless steel with copper vacuum insulation, this 20 oz tumbler maintains beverage temperature for extended periods while preventing exterior condensation. The durable powder coat finish adds grip and resists scratches, and the included stainless steel straw with color-coordinated silicone sipper makes it a complete, reusable drinkware solution. It arrives in an individual craft gift box, making it an elevated choice for corporate gifting, employee recognition, and event giveaways.',
+      block2_bullets:[
+        '**Copper Vacuum Insulation:** Double-wall construction with a copper layer keeps drinks hot or cold for hours without sweating.',
+        '**Powder Coat Finish:** Durable, scratch-resistant exterior provides a comfortable grip and a premium look.',
+        '**Reusable Straw Included:** Stainless steel straw with a color-matched silicone sipper reduces single-use plastic waste.',
+        '**Gift-Ready Packaging:** Each tumbler comes in an individual craft gift box, simplifying distribution for events and recognition programs.',
+        '**Two Decoration Methods:** Choose screen printing for up to 3 colors or Jet-Directt for full-color, photo-quality branding.'],
+      block3_imprint_facts:'Method: Screen · Locations: Side 1, Side 2, Full Wrap · Colors: 3 max\nMethod: Jet-Directt · Locations: Side 1, Side 2, Full Wrap · Colors: 256 max',
+      rephrased_long_description:'Constructed from double-wall stainless steel with copper vacuum insulation, this 20 oz tumbler maintains beverage temperature for extended periods while preventing exterior condensation. The durable powder coat finish adds grip and resists scratches, and the included stainless steel straw with color-coordinated silicone sipper makes it a complete, reusable drinkware solution. It arrives in an individual craft gift box, making it an elevated choice for corporate gifting, employee recognition, and event giveaways. Choose from screen printing for up to 3 colors or Jet-Directt for full-color, photo-quality branding.',
+      bullet_points_suggested:[
+        'Material — double-wall stainless steel with copper vacuum insulation',
+        'Finish — powder coated exterior for durability and grip',
+        'Straw — stainless steel straw with color-coordinated silicone sipper',
+        'Best For — corporate gifts, employee recognition, event giveaways',
+        'Packaging — individual craft gift box included'],
+      icon_cards:[
+        {label:'20 oz Capacity',micro:'Holds a generous serving of hot or cold beverages for daily use or travel.'},
+        {label:'Copper Vacuum Insulated',micro:'Double-wall construction with a copper layer keeps drinks at temperature for hours without exterior condensation.'},
+        {label:'Two Imprint Methods',micro:'Screen printing for up to 3 colors or Jet-Directt for full-color, photo-quality decoration.'},
+        {label:'Gift Box Included',micro:'Each tumbler arrives in an individual craft gift box, ready for presentation.'}]
+    },
+    chrome:{
+      price:'$14.95', priceEa:'/ ea at 48', tiers:'24 → $16.75 · 48 → $14.95 · 96 → $13.50 · 250 → $12.10 each',
+      qty:'48',
+      swatches:[['Matte Black','1a1a1a',1],['Navy','1f2a44'],['Stainless','b9bcc0'],['Maroon','6e1f2b'],['Teal','1f6f72'],['White','f4f4f2']],
+      swatchLabel:'Matte Black',
+      lead:'Production: 7 business days after proof approval',
+      deliver:'Arrives by Thu, Jun 25 with standard shipping',
+      sizing:null,
+      capacity:'20 oz',
+      specs:[['Capacity','20 oz'],['Material','Double-wall stainless steel'],['Insulation','Copper vacuum'],['Finish','Powder coat'],['Lid','Press-on with slider'],['Straw','Stainless steel + silicone sipper'],['Packaging','Individual craft gift box'],['Care','Hand wash recommended']],
+      reviewAvg:'4.8', reviewCount:'171', reviewDist:[['5',88],['4',8],['3',2],['2',1],['1',1]],
+      kw:['Keeps cold (62)','Print quality (44)','Feels premium (31)','Gift box (22)','Value (14)'],
+      reviews:[
+        ['★★★★★','Janelle R.','May 2026','Bought 100 with full-color Jet-Directt print for our client appreciation event. The photo-quality logo looked incredible and the gift box made handout easy.'],
+        ['★★★★★','Tom B.','Apr 2026','Keeps ice all day. We did a simple 2-color screen print and it came out clean. Repeat order for sure.']],
+      qa:[
+        ['What is the difference between Screen and Jet-Directt?','Screen printing supports up to 3 spot colors and is ideal for simple logos. Jet-Directt is a full-color (up to 256 colors), photo-quality digital process — best for gradients, photos, or multi-color art.'],
+        ['Can I print on both sides?','Yes — both methods support Side 1, Side 2, or a Full Wrap. Each additional location may carry its own run charge.'],
+        ['Is it dishwasher safe?','We recommend hand washing to preserve the powder coat finish and the printed decoration.']],
+      xsell:[['16 oz Copper Vacuum Tumbler','$12.40','4.7 (140)'],['24 oz Sport Water Bottle','$13.20','4.8 (96)'],['12 oz Stainless Wine Tumbler','$10.90','4.6 (72)'],['Ceramic Coffee Mug 14 oz','$8.50','4.7 (210)']],
+      xsellCat:'Tumblers'
+    }
+  },
+  {
+    id:'LAA-YT10', case:'Novelty', tab:'Stress Toy (single-method)', icon:'fish',
+    crumb:['Home','Novelty & Toys','Stress Relievers'],
+    v2:{
+      seo:{urlSlug:'yellowfin-tuna-stress-reliever',
+        metaTitle:'Yellowfin Tuna Stress Reliever | PromotionPros',
+        metaDescription:'Custom-printed Yellowfin Tuna stress reliever made of polyurethane. Order in bulk for ocean-themed events, fishing tournaments, and corporate wellness giveaways.'},
+      rephrased_title:'Yellowfin Tuna Polyurethane Stress Reliever',
+      rephrased_short_description:'Yellowfin tuna-shaped stress reliever made of soft polyurethane, sized for desk and pocket use, with a side imprint zone for custom branding.',
+      block1_prose:'Molded from soft polyurethane, this Yellowfin Tuna stress reliever delivers a satisfying squeeze that helps release tension during long meetings or travel. Its detailed tuna shape with fins and tail makes it a natural fit for ocean-themed promotions, fishing tournaments, and coastal business giveaways. The compact size slips easily into a pocket or desk drawer, so recipients can keep it within reach whenever stress strikes.',
+      block2_bullets:[
+        '**Polyurethane Construction:** Soft, durable foam material springs back after every squeeze, maintaining its shape through repeated use.',
+        '**Detailed Tuna Shape:** Realistic yellowfin design with fins and tail creates instant recognition for marine and fishing audiences.',
+        '**Side Imprint Zone:** Pad-printed decoration area on the side supports up to 4 colors for logos and event details.',
+        '**Pocket-Sized Portability:** Compact dimensions fit easily in a pocket, bag, or desk organizer for on-the-go stress relief.',
+        '**Bulk-Order Ready:** Consistent quality across production runs makes it suitable for large-scale giveaways and event swag bags.'],
+      block3_imprint_facts:'Method: Pad · Area: 1×5/8 in. (sides) · Colors: 4 max · Setup: $60.00',
+      rephrased_long_description:'Molded from soft polyurethane, this Yellowfin Tuna stress reliever delivers a satisfying squeeze that helps release tension during long meetings or travel. Its detailed tuna shape with fins and tail makes it a natural fit for ocean-themed promotions, fishing tournaments, and coastal business giveaways. The compact size slips easily into a pocket or desk drawer, so recipients can keep it within reach whenever stress strikes. The durable foam material springs back after every squeeze, maintaining its shape through repeated use, and the realistic yellowfin design creates instant recognition for marine and fishing audiences. A pad-printed decoration area on the side supports up to 4 colors for logos and event details, and consistent quality across production runs makes it suitable for large-scale giveaways and event swag bags.',
+      bullet_points_suggested:[
+        'Material — soft polyurethane foam springs back after squeezing',
+        'Decoration — pad print on side; up to 4 colors',
+        'Size — compact dimensions fit pocket, bag, or desk',
+        'Best For — fishing tournaments, ocean-themed events, coastal promotions, wellness giveaways'],
+      icon_cards:[
+        {label:'Polyurethane Foam',micro:'Soft, durable material springs back after every squeeze for long-lasting stress relief.'},
+        {label:'Side Imprint',micro:'Pad-printed decoration area on the side supports up to 4 colors for custom logos.'},
+        {label:'Pocket-Sized',micro:'Compact dimensions fit easily in a pocket, bag, or desk organizer for on-the-go use.'},
+        {label:'Bulk Orders',micro:'Consistent quality across production runs for large-scale giveaways and event swag bags.'}]
+    },
+    chrome:{
+      price:'$2.18', priceEa:'/ ea at 250', tiers:'100 → $2.65 · 250 → $2.18 · 500 → $1.92 · 1000 → $1.68 each',
+      qty:'250',
+      swatches:[['Natural','5b86b3',1]],
+      swatchLabel:'Natural (as shown)',
+      lead:'Production: 7 business days after proof approval',
+      deliver:'Arrives by Thu, Jun 25 with standard shipping',
+      sizing:null,
+      specs:[['Material','Soft polyurethane foam'],['Shape','Yellowfin tuna with fins & tail'],['Imprint area','1 × 5/8 in. (sides)'],['Decoration','Pad print, up to 4 colors'],['Use','Desk / pocket stress reliever'],['Best for','Marine & fishing promotions']],
+      reviewAvg:'4.6', reviewCount:'58', reviewDist:[['5',74],['4',18],['3',5],['2',2],['1',1]],
+      kw:['Fun shape (24)','Squeeze feel (19)','Print quality (14)','Crowd pleaser (11)'],
+      reviews:[
+        ['★★★★★','Diego F.','May 2026','Handed these out at a fishing tournament with our logo pad-printed on the side. They were a huge hit — people kept coming back for extras.'],
+        ['★★★★☆','Priya N.','Mar 2026','Cute and squishy. The print is small but legible. Good budget giveaway for an ocean-themed booth.']],
+      qa:[
+        ['Where does my logo go?','Decoration is a pad print in the side imprint zone (about 1 × 5/8 in.), supporting up to 4 colors. Larger or multi-side art is not supported on this item.'],
+        ['Is there a setup charge?','Yes — a one-time $60 setup charge applies per color/order. Reorders of the same art typically waive new setup; ask your rep.'],
+        ['What is it made of?','Soft polyurethane foam that springs back after squeezing. It is a decorative stress reliever, not a toy for small children.']],
+      xsell:[['Globe Stress Reliever','$1.95','4.6 (132)'],['Anchor Stress Reliever','$2.10','4.5 (61)'],['Shark Stress Reliever','$2.25','4.7 (88)'],['Beach Ball Stress Reliever','$1.80','4.6 (74)']],
+      xsellCat:'Stress Relievers'
+    }
+  },
+  {
+    id:'7127', case:'Award', tab:'Globe (no imprint data)', icon:'globe',
+    crumb:['Home','Office & Awards','Crystal Awards'],
+    v2:{
+      seo:{urlSlug:'spinning-globe-award-black-glass-optical-crystal',
+        metaTitle:'Spinning Globe Award in Black Glass & Crystal | PromotionPros',
+        metaDescription:'Custom-engraved spinning globe award in black glass and optical crystal. Order for corporate recognition, banquets, and talent awards.'},
+      rephrased_title:'Spinning Globe Award in Black Glass and Optical Crystal',
+      rephrased_short_description:'A spinning globe award crafted from black glass and optical crystal, measuring 3 1/2" x 4 3/4", ideal for recognizing talent and hard work at banquets and corporate events.',
+      block1_prose:'This spinning globe award combines a black glass base with an optical crystal globe, creating a striking symbol of global success. The globe rotates smoothly, drawing attention to its detailed craftsmanship, while the contrasting materials give it a premium, modern look. It is a memorable choice for recognizing outstanding talent, years of service, or major achievements at corporate banquets and award ceremonies.',
+      block2_bullets:[
+        '**Spinning Globe Design:** The optical crystal globe rotates on its black glass base, adding a dynamic, interactive element to the award.',
+        '**Premium Material Combination:** Black glass and optical crystal create a sophisticated contrast that stands out on any desk or shelf.',
+        '**Generous Imprint Area:** The award offers ample space for personalization, allowing you to add a company logo, recipient name, or special message.',
+        '**Gift-Ready Packaging:** Each award comes in a black gift box, making it easy to present at events.',
+        '**Single-Unit Ordering Available:** Order as few as one piece, making it practical for individual recognition or small executive gifts.'],
+      block3_imprint_facts:null,
+      rephrased_long_description:'This spinning globe award combines a black glass base with an optical crystal globe, creating a striking symbol of global success. The globe rotates smoothly, drawing attention to its detailed craftsmanship, while the contrasting materials give it a premium, modern look. The award offers ample space for personalization, allowing you to add a company logo, recipient name, or special message, and each piece comes in a black gift box for easy presentation. It is a memorable choice for recognizing outstanding talent, years of service, or major achievements at corporate banquets and award ceremonies, and single-unit ordering is available for individual recognition or small executive gifts.',
+      bullet_points_suggested:[
+        'Material — black glass base with optical crystal globe',
+        'Design — spinning globe adds an interactive, dynamic element',
+        'Personalization — ample imprint area for logos and messages',
+        'Best For — corporate recognition, banquets, talent awards, years of service',
+        'Packaging — black gift box included for immediate presentation'],
+      icon_cards:[
+        {label:'Spinning Globe',micro:'Optical crystal globe rotates on its black glass base for a dynamic, eye-catching display.'},
+        {label:'Black Glass & Crystal',micro:'Premium combination of black glass and optical crystal creates a sophisticated, modern look.'},
+        {label:'Ample Imprint Area',micro:'Plenty of room for a company logo, recipient name, or special message to personalize the award.'},
+        {label:'Gift Box Included',micro:'Each award comes in a black gift box, ready for presentation at banquets and events.'}]
+    },
+    chrome:{
+      price:'$48.00', priceEa:'/ each', tiers:'1 → $48.00 · 5 → $44.00 · 10 → $40.00 · 25 → $36.50 each',
+      qty:'1',
+      swatches:[['Black Glass / Crystal','111418',1]],
+      swatchLabel:'Black Glass & Optical Crystal (as shown)',
+      lead:'Production: 5 business days after proof approval (engraving)',
+      deliver:'Arrives by Tue, Jun 23 with standard shipping',
+      sizing:null,
+      dims:'3 1/2" x 4 3/4"',
+      specs:[['Materials','Black glass base + optical crystal globe'],['Size','3 1/2" x 4 3/4"'],['Feature','Spinning globe'],['Personalization','Engraving / imprint area'],['Min. order','1 piece'],['Packaging','Black gift box included']],
+      reviewAvg:'4.9', reviewCount:'37', reviewDist:[['5',92],['4',5],['3',3],['2',0],['1',0]],
+      kw:['Looks premium (18)','Engraving (12)','Gift box (9)','Heavy/solid (7)'],
+      reviews:[
+        ['★★★★★','Helen W.','May 2026','Gave this as a 10-year service award. The spinning globe is a beautiful touch and the engraving was sharp. Came in a nice presentation box.'],
+        ['★★★★★','Raj S.','Feb 2026','Ordered a single piece for an executive recognition. Premium feel, fast turnaround, looked great on stage.']],
+      qa:[
+        ['How do I personalize this award?','This award is personalized by engraving. Add your logo, recipient name, or message in the Customize step, or send art to your rep for a proof.'],
+        ['Can I order just one?','Yes — single-unit ordering is available, which makes it practical for individual recognition or executive gifts.'],
+        ['Does it come ready to present?','Yes — each award ships in a black gift box, ready to hand out at a banquet or ceremony.']],
+      xsell:[['Optical Crystal Tower Award','$52.00','4.9 (44)'],['Black Glass Rectangle Award','$38.00','4.8 (61)'],['Crystal Star Award','$45.00','4.9 (29)'],['Engraved Glass Plaque','$34.00','4.7 (88)']],
+      xsellCat:'Crystal Awards'
+    }
+  },
+  {
+    id:'T537R5', case:'Pen', tab:'BIC (single-method)', icon:'pen',
+    crumb:['Home','Stationery','Pens'],
+    v2:{
+      seo:{urlSlug:'bic-triumph-537r-ultra-fine-pen',
+        metaTitle:'BIC Triumph 537R .5mm Pen | PromotionPros',
+        metaDescription:'Custom BIC Triumph 537R pen with .5mm ultra-fine point and smooth ink system. Order in bulk for conferences and office supplies.'},
+      rephrased_title:'BIC Triumph 537R .5mm Ultra-Fine Point Pen',
+      rephrased_short_description:'BIC Triumph 537R pen with a .5mm ultra-fine point and super-smooth ink system for effortless writing, featuring a modern two-piece design.',
+      block1_prose:'The BIC Triumph 537R pen combines a .5mm ultra-fine point with a super-smooth ink system for precise, effortless writing. Its modern two-piece design and tungsten carbide ball ensure consistent, skip-free lines on various paper types. Ideal for conference swag, office supplies, and client gifts where a reliable, professional writing instrument is essential.',
+      block2_bullets:[
+        '**Ultra-Fine Point:** .5mm tip with tungsten carbide ball delivers precise, consistent lines for detailed writing tasks.',
+        '**Smooth Ink System:** Super-smooth ink formulation provides an effortless writing experience with minimal pressure.',
+        '**Modern Two-Piece Design:** Professional appearance with a cap that protects the tip and prevents drying out.',
+        '**Screen Print Decoration:** Cap imprint area available for custom branding with no setup charge.',
+        '**Bulk Order Ready:** Minimum order quantity of 150 units, with volume discounts for larger programs.'],
+      block3_imprint_facts:'Method: Screen Print · Locations: Cap · Setup: $0.00',
+      rephrased_long_description:'The BIC Triumph 537R pen combines a .5mm ultra-fine point with a super-smooth ink system for precise, effortless writing. Its modern two-piece design and tungsten carbide ball ensure consistent, skip-free lines on various paper types. The cap protects the tip and provides a screen print area for custom branding with no setup charge. Ideal for conference swag, office supplies, and client gifts, this pen is available in bulk with a minimum order of 150 units and volume discounts for larger programs.',
+      bullet_points_suggested:[
+        'Tip — .5mm ultra-fine point with tungsten carbide ball for precision',
+        'Ink — super-smooth ink system for effortless writing',
+        'Design — modern two-piece construction with protective cap',
+        'Best For — conference giveaways, office supplies, client gifts',
+        'MOQ — 150 units with volume discounts available'],
+      icon_cards:[
+        {label:'.5mm Ultra-Fine Point',micro:'Tungsten carbide ball tip delivers precise, consistent lines for detailed writing tasks.'},
+        {label:'Smooth Ink System',micro:'Super-smooth ink formulation provides an effortless writing experience with minimal pressure.'},
+        {label:'Screen Print Decoration',micro:'Cap imprint area available for custom branding with no setup charge.'},
+        {label:'MOQ 150 Units',micro:'Bulk orders start at 150 units with volume discounts for larger programs.'}]
+    },
+    chrome:{
+      price:'$0.89', priceEa:'/ ea at 300', tiers:'150 → $1.05 · 300 → $0.89 · 500 → $0.79 · 1000 → $0.69 each',
+      qty:'300',
+      swatches:[['Blue','1f3fae',1],['Black','1a1a1a'],['Red','b3242c'],['Green','177a3a'],['Silver','b9bcc0']],
+      swatchLabel:'Blue',
+      lead:'Production: 5 business days after proof approval',
+      deliver:'Arrives by Tue, Jun 23 with standard shipping',
+      sizing:null,
+      specs:[['Point size','.5 mm ultra-fine'],['Ball','Tungsten carbide'],['Ink','Super-smooth black ink system'],['Design','Two-piece with cap'],['Imprint','Screen print on cap'],['Setup','$0.00'],['MOQ','150 units']],
+      reviewAvg:'4.7', reviewCount:'212', reviewDist:[['5',79],['4',15],['3',4],['2',1],['1',1]],
+      kw:['Writes smooth (74)','Fine line (52)','Print quality (33)','Value (28)','No setup fee (19)'],
+      reviews:[
+        ['★★★★★','Monica L.','May 2026','Ordered 500 with our logo screen-printed on the cap for a conference. No setup fee was a nice surprise. Writes really smoothly.'],
+        ['★★★★☆','Greg A.','Apr 2026','Reliable fine-point pen. The .5mm tip is great for detailed notes. Print held up well.']],
+      qa:[
+        ['Where is the logo printed?','The logo is screen-printed on the cap. There is no setup charge for this item, which keeps bulk costs low.'],
+        ['What is the minimum order?','The minimum order quantity is 150 units. Volume discounts apply at 300, 500, and 1,000 units.'],
+        ['What ink color does it write in?','The Triumph 537R uses a super-smooth black ink system with a .5mm ultra-fine point.']],
+      xsell:[['BIC Round Stic Pen','$0.39','4.6 (520)'],['BIC Clic Stic Pen','$0.55','4.7 (410)'],['BIC Grip Roller Pen','$0.95','4.8 (96)'],['BIC Brite Liner Highlighter','$0.85','4.7 (140)']],
+      xsellCat:'Pens'
+    }
+  }
+];
+
+/* ---------- helpers ---------- */
+const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+// convert **bold** markdown -> <strong>, escaping the rest
+function mdBold(s){
+  return esc(s).replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>');
+}
+// product gallery icons (line-art placeholders, like the base)
+const ICONS={
+  shirt:'<path d="M6 4l3-1 3 2 3-2 3 1 2 4-3 1v10H7V10L4 8z"/>',
+  cup:'<path d="M7 4h10l-1 16H8z"/><path d="M8.5 8h7"/>',
+  fish:'<path d="M3 12c4-5 11-5 15 0-4 5-11 5-15 0z"/><path d="M18 12l3-3v6z"/><circle cx="8" cy="11" r="1"/>',
+  globe:'<circle cx="12" cy="10" r="7"/><path d="M5 10h14M12 3c3 2 3 12 0 14M12 3c-3 2-3 12 0 14"/><path d="M9 19h6M10 21h4"/>',
+  pen:'<path d="M4 20l2-6L16 4l4 4L10 18z"/><path d="M14 6l4 4"/>'
+};
+
+let CUR = 0;
+
+function parseImprintFacts(raw){
+  // raw: one method per line; fields ` · `-separated; first field "Method: X"
+  if(!raw) return null;
+  return raw.split('\n').map(line=>{
+    const parts = line.split('·').map(p=>p.trim()).filter(Boolean);
+    let method=''; const specs=[];
+    parts.forEach(p=>{
+      const ci=p.indexOf(':');
+      const k = ci>=0 ? p.slice(0,ci).trim() : '';
+      const v = ci>=0 ? p.slice(ci+1).trim() : p;
+      if(/^method$/i.test(k)) method=v; else specs.push([k,v]);
+    });
+    return {method, specs};
+  });
+}
+
+function buildPnav(){
+  document.getElementById('pnav').innerHTML = PRODUCTS.map((p,i)=>
+    `<button data-prod="${i}" class="${i===CUR?'on':''}">
+       <span class="case">${esc(p.case)}</span>
+       <span class="pname">${esc(p.tab)}</span>
+     </button>`).join('');
+}
+
+function buildCrumb(p){
+  const segs = p.crumb.map((c,i)=> i<p.crumb.length-1 ? `<a href="#">${esc(c)}</a>` : c);
+  return segs.join(' › ') + ` › <span style="color:var(--ink)">${esc(p.v2.rephrased_title)}</span>`;
+}
+
+function buildGallery(p){
+  document.getElementById('galIco').innerHTML = ICONS[p.icon]||'';
+  document.getElementById('galScale').textContent = 'Shown in scale';
+  const thumbs = ['Front — in scale','Feature callout','Lifestyle — in use','Detail'];
+  document.getElementById('galThumbs').innerHTML = thumbs.map((t,i)=>`<div class="t ${i===0?'on':''}">${esc(t)}</div>`).join('');
+}
+
+function buildBuybox(p){
+  const v=p.v2, c=p.chrome;
+  const swatches = `<div class="swatches">${c.swatches.map((s,i)=>`<span class="swatch ${s[2]?'on':''}" style="background:#${s[1]}" title="${esc(s[0])}"></span>`).join('')}</div><div style="font-size:13px;margin-top:8px">Color: <b>${esc(c.swatchLabel)}</b></div>`;
+  const single = c.swatches.length===1;
+  const colorBlock = single
+    ? `<div class="bb-block"><div class="lbl">Color</div><div style="font-size:13px">${esc(c.swatchLabel)}</div></div>`
+    : `<div class="bb-block"><div class="lbl">Color</div>${swatches}</div>`;
+
+  document.getElementById('buybox').innerHTML = `
+    <h1 class="bb-title">${esc(v.rephrased_title)}</h1>
+    <div class="bb-sub">${esc(v.rephrased_short_description)}</div>
+    <div class="bb-rating"><span class="stars">★★★★★</span> <b>${esc(c.reviewAvg)}</b> <a href="#reviews">(${esc(c.reviewCount)} reviews)</a></div>
+    <div class="bb-block">
+      <div class="bb-price"><span class="amt">${esc(c.price)}</span><span class="ea">${esc(c.priceEa)}</span></div>
+      <div class="bb-perunit">Tiered: ${esc(c.tiers)}</div>
+    </div>
+    <div class="bb-block">
+      <div class="fulfil">
+        <div class="row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span>${esc(c.lead)}</span></div>
+        <div class="row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7h13v10H3z"/><path d="M16 10h4l1 3v4h-5z"/><circle cx="7" cy="18" r="1.6"/><circle cx="18" cy="18" r="1.6"/></svg><span>${esc(c.deliver)}</span></div>
+        <div class="row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12l5 5L20 6"/></svg><span class="hi">Free shipping over $250</span></div>
+      </div>
+    </div>
+    ${colorBlock}
+    <div class="bb-block">
+      <div class="lbl">Quantity</div>
+      <div class="qty-cta"><input class="qty-input" value="${esc(c.qty)}"><button class="btn-cta">Customize Your Product</button></div>
+      <div class="trust-row">
+        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l8 4v6c0 5-8 10-8 10S4 17 4 12V6z"/></svg>100% Guarantee</span>
+        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7h13v10H3z"/></svg>Free Sample</span>
+        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 14l-4-4 4-4"/><path d="M5 10h11a4 4 0 010 8h-3"/></svg>Easy Returns</span>
+      </div>
+    </div>`;
+}
+
+/* ---------- decoration method copy (verbatim from decoration-copy v2 dictionary) ---------- */
+const METHOD_COPY={
+  'screen print':{
+    short_description:'Ink pushed through a mesh stencil onto the surface, leaving colored artwork that sits right on top of the material.',
+    hint:'Best when your artwork is bold spot-color shapes, blocks of solid color, or simple lettering where you want strong, opaque coverage that reads clearly. Each color is a separate ink pass, producing crisp, defined edges and flat, solid fills. Struggles with fine gradients, photographic blends, or hairline detail — those require a process-color method.',
+    full_description:'Screen printing presses ink through a fine mesh stencil, laying down each color as a separate pass to produce bold, opaque fills.\n\nThe applied mark is flat and sits on top of the material with crisp, defined edges; on heavy coverage, you can feel a slight raised texture where ink builds up. The cured ink is durable and holds up to repeated handling and washing.'
+  },
+  'full color':{
+    short_description:'Digital full-color printing that reproduces photographic imagery, smooth gradients, and fine multi-color detail as one continuous, flat print.',
+    hint:'Reach for this when the artwork is photographic, has gradients or blends, or carries more colors than clean solids can capture — it renders intricate detail and small type cleanly. Brand colors are simulated within a full-color blend, so they land close but not as an exact, edge-to-edge matched spot color.',
+    full_description:'Digital printing sends artwork straight from file to surface — no plates or per-color screens. One pass carries photographs, gradients, drop shadows, and dense multi-color artwork at high resolution.\n\nThe applied mark reads as a flat image on the surface; fine detail and smooth tonal blends stay crisp across the print area, while a specific brand Pantone is rendered as a close process simulation rather than an exact spot ink.'
+  },
+  'pad printed':{
+    short_description:'Thin, flat layer of colored opaque ink that conforms to curved and recessed surfaces, sitting nearly flush with crisp edges.',
+    hint:'Best when artwork has fine lines, small text, or tight detail that must stay sharp on a contoured or uneven surface — the conforming ink holds crisp edges where flat-application methods can’t reach. It lays down clean, controlled marks rather than broad coverage, suited to precise branding on small or irregular surfaces.',
+    full_description:'Pad printing (tampography) transfers ink from a silicone pad onto the item, flexing into curves, angles, and recessed areas flat application can’t follow.\n\nThe result is a thin, nearly flush colored ink layer with well-defined edges, reproducing fine lines and small text accurately on curved or contoured surfaces; cured ink resists everyday wear.'
+  }
+};
+// resolve a feed method name -> copy key (B726 "Jet-Directt" => Full Color; "Screen" => Screen Print)
+function methodCopyFor(name){
+  const n=(name||'').toLowerCase().trim();
+  if(n==='screen'||n==='screen print') return METHOD_COPY['screen print'];
+  if(n==='jet-directt'||n==='jet directt'||n==='full color') return METHOD_COPY['full color'];
+  if(n==='pad'||n==='pad printed'||n==='pad print') return METHOD_COPY['pad printed'];
+  return null;
+}
+function descParas(t){ return t.split('\n\n').map(p=>`<p>${esc(p)}</p>`).join(''); }
+
+/* ---------- decoration section (parsed imprint facts OR empty state) ---------- */
+function decoBody(p){
+  const facts = parseImprintFacts(p.v2.block3_imprint_facts);
+  if(facts){
+    const cards = facts.map(f=>{
+      const copy = methodCopyFor(f.method);
+      const facetags = `<div class="deco-specs">${f.specs.map(s=>`<span class="deco-spec">${s[0]?`<b>${esc(s[0])}:</b> `:''}${esc(s[1])}</span>`).join('')}</div>`;
+      // LEFT: full_description (if mapped) + structured facts. RIGHT: short_description + hint decision aside.
+      const left = `<div class="deco-main">${copy?`<div class="deco-desc">${descParas(copy.full_description)}</div>`:''}${facetags}</div>`;
+      const aside = copy?`<aside class="deco-aside">
+          <div class="at"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 113 2.4V13"/><path d="M12 16h.01"/></svg>When to choose this</div>
+          <div class="as">${esc(copy.short_description)}</div>
+          <div class="ah">${esc(copy.hint)}</div>
+        </aside>`:'';
+      const inner = copy ? `<div class="deco-grid">${left}${aside}</div>` : left;
+      return `<div class="deco-card">
+        <div class="dn">${esc(f.method)}<span class="mtag">Method</span></div>
+        ${inner}
+      </div>`;
+    }).join('');
+    return `<div class="deco-mini">${cards}</div>
+      <div class="deco-foot">Imprint facts above are from the product feed. Method descriptions are from the decoration-copy dictionary. Final colors, art proofs, and run charges are confirmed in the Customize step.</div>`;
+  }
+  // null block3_imprint_facts — graceful empty / not-yet state (S608 apparel, 7127 award). Do NOT invent specs.
+  return `<div class="deco-empty">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v4h1"/></svg>
+      <div>
+        <b>Decoration options available — contact for details</b>
+        <p>This item can be customized with your logo or message. Structured imprint specs (method, location, colors, setup) are not yet in the feed for this product. Start a quote or ask your rep and we'll confirm available methods and pricing.</p>
+      </div>
+    </div>`;
+}
+function decoBadge(p){
+  const facts = parseImprintFacts(p.v2.block3_imprint_facts);
+  if(!facts) return '';
+  return facts.length>1 ? `${facts.length} methods` : '1 method';
+}
+
+/* ---------- left-column stacked sections ---------- */
+function sections(p){
+  const v=p.v2, c=p.chrome;
+
+  // Description: prose + benefit bullets (**bold** -> <strong>) + Product Highlights (icon_cards)
+  const descBody =
+    `<p class="prose">${esc(v.block1_prose)}</p>
+     <ul class="flist">${v.block2_bullets.map(b=>`<li>${mdBold(b)}</li>`).join('')}</ul>
+     <div class="highlights">${v.icon_cards.map(card=>`
+        <div class="hl">
+          <svg class="hi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></svg>
+          <b>${esc(card.label)}</b><p>${esc(card.micro)}</p>
+        </div>`).join('')}</div>`;
+
+  // Highlights strip (bullet_points_suggested) — plain text, split "Label — text" into bold label
+  const stripBody = `<ul class="hstrip">${v.bullet_points_suggested.map(b=>{
+    const m=b.match(/^([^—]+—)\s*(.*)$/);
+    return m ? `<li><b>${esc(m[1])}</b> ${esc(m[2])}</li>` : `<li>${esc(b)}</li>`;
+  }).join('')}</ul>`;
+
+  const specsBody = `<table class="spectable">${c.specs.map(r=>`<tr><td>${esc(r[0])}</td><td>${esc(r[1])}</td></tr>`).join('')}</table>`;
+
+  const secs = [
+    { title:'Description', open:true, body:descBody },
+    { title:'Highlights', open:true, body:stripBody },
+    { title:'Decoration &amp; Imprint Options', badge:decoBadge(p), open:true, body:decoBody(p) },
+    { title:'Specifications', open:true, body:specsBody }
+  ];
+
+  // Sizing & Fit only for apparel (S608) — real per-category adaptation
+  if(c.sizing){
+    secs.push({ title:'Sizing &amp; Fit', open:false, body:
+      `<p class="prose">${esc(c.sizing)}</p>
+       <table class="spectable"><tr><td>Size</td><td>Chest</td></tr>${c.sizingChart.map(r=>`<tr><td>${esc(r[0])}</td><td>${esc(r[1])}</td></tr>`).join('')}</table>` });
+  }
+
+  secs.push(
+    { title:'Shipping, Production &amp; Returns', open:false, body:
+      `<div class="ship-grid">
+        <div class="ship-card"><b>Production</b><p>${esc(c.lead.replace(/^Production:\s*/,''))} Rush available — ask your rep.</p></div>
+        <div class="ship-card"><b>Delivery</b><p>${esc(c.deliver)}. Free shipping on orders over $250.</p></div>
+        <div class="ship-card"><b>Returns</b><p>Decorated items are custom-made; we replace defects or printing errors at no charge.</p></div>
+        <div class="ship-card"><b>Guarantee</b><p>100% satisfaction guarantee on quality and on-time delivery.</p></div>
+       </div>` },
+    { title:'Reviews', badge:`${c.reviewAvg} ★`, open:true, body:
+      `<div id="reviews"></div>
+       <div class="rev-top">
+         <div class="rev-score"><div class="big">${esc(c.reviewAvg)}</div><div class="st">★★★★★</div><div class="ct">${esc(c.reviewCount)} reviews</div></div>
+         <div class="rev-hist">${c.reviewDist.map(r=>`<div class="hist-row"><span>${r[0]}★</span><span class="bar"><span class="fill" style="width:${r[1]}%"></span></span><span>${r[1]}%</span></div>`).join('')}</div>
+       </div>
+       <div class="kw-filters">${c.kw.map(k=>`<span class="kw">${esc(k)}</span>`).join('')}</div>
+       ${c.reviews.map(r=>`<div class="review"><div class="rh"><span><span class="rs">${r[0]}</span> <span class="rn">${esc(r[1])}</span> · Verified</span><span>${esc(r[2])}</span></div><div class="rt">${esc(r[3])}</div></div>`).join('')}
+       <button class="load-more">Load more reviews</button>` },
+    { title:'Questions &amp; Answers', open:false, body:
+      c.qa.map(q=>`<div class="qa"><div class="q">${esc(q[0])}</div><div class="a">${esc(q[1])}</div><div class="src">Answered by PromotionPros</div></div>`).join('') },
+    { title:'You might also like', open:true, body:
+      `<div class="xsell">${c.xsell.map(x=>`<div class="xcard"><div class="xi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">${ICONS[p.icon]||''}</svg></div><div class="xb"><div class="xn">${esc(x[0])}</div><div class="xp">${esc(x[1])} <span style="font-size:11px;color:var(--text);font-weight:400">/ ea</span></div><div class="xr">★ ${esc(x[2])}</div></div></div>`).join('')}</div>
+       <div class="xsell-foot"><a href="#">See all ${esc(c.xsellCat)} ›</a></div>` }
+  );
+  return secs;
+}
+
+function buildSections(p){
+  document.getElementById('sections').innerHTML = sections(p).map(s=>`
+    <div class="psec ${s.open?'open':''}">
+      <button class="psec-hdr" data-sec-toggle><span class="psec-title">${s.title}${s.badge?` <span class="badge">${esc(s.badge)}</span>`:''}</span>
+        <svg class="psec-chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></button>
+      <div class="psec-body">${s.body}</div>
+    </div>`).join('');
+}
+
+/* ---------- SEO / Google annotation panel ---------- */
+function buildSeoPanel(p){
+  const v=p.v2, s=v.seo;
+  document.getElementById('seoPanel').innerHTML = `
+    <button class="seo-hdr" id="seoToggle"><span class="stag">REVIEWER</span> SEO / Google annotation — not shown in the live PDP body
+      <svg class="schev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></button>
+    <div class="seo-body">
+      <div class="seo-field"><div class="fl">How it looks on Google (SERP preview)</div>
+        <div class="serp">
+          <div class="surl">PromotionPros<span class="dom"> › ${esc(s.urlSlug)}</span></div>
+          <div class="stit">${esc(s.metaTitle)}</div>
+          <div class="sdesc">${esc(s.metaDescription)}</div>
+        </div>
+      </div>
+      <div class="seo-field"><div class="fl">seo.metaTitle (page &lt;title&gt;)</div><div class="fv">${esc(s.metaTitle)}</div></div>
+      <div class="seo-field"><div class="fl">seo.metaDescription (meta description)</div><div class="fv">${esc(s.metaDescription)}</div></div>
+      <div class="seo-field"><div class="fl">seo.urlSlug</div><div class="fv">${esc(s.urlSlug)}</div></div>
+      <div class="seo-field"><div class="fl">Google Shopping description (rephrased_long_description) — feed only, NOT on the PDP body</div><div class="fv">${esc(v.rephrased_long_description)}</div></div>
+    </div>`;
+}
+
+/* ---------- render ---------- */
+function render(){
+  const p = PRODUCTS[CUR];
+  document.title = p.v2.seo.metaTitle;
+  document.getElementById('metaDescTag').setAttribute('content', p.v2.seo.metaDescription);
+  buildPnav();
+  document.getElementById('crumb').innerHTML = buildCrumb(p);
+  buildGallery(p); buildBuybox(p); buildSections(p); buildSeoPanel(p);
+}
+
+document.addEventListener('click',e=>{
+  const pb=e.target.closest('[data-prod]');
+  if(pb){ CUR=+pb.dataset.prod; location.hash=PRODUCTS[CUR].id; render(); window.scrollTo({top:0,behavior:'smooth'}); return; }
+  const st=e.target.closest('[data-sec-toggle]'); if(st){ st.closest('.psec').classList.toggle('open'); return; }
+  const sg=e.target.closest('#seoToggle'); if(sg){ document.getElementById('seoPanel').classList.toggle('open'); return; }
+});
+
+// deep-link by product id in the hash (e.g. #B726)
+(function init(){
+  const h=location.hash.replace('#','');
+  const idx=PRODUCTS.findIndex(p=>p.id===h);
+  if(idx>=0) CUR=idx;
+  render();
+})();
+</script>
+</body>
+</html>
