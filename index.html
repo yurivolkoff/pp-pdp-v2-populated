@@ -322,8 +322,8 @@ h1,h2,h3,h4{color:var(--ink);line-height:1.2}
 
 <div class="demo-bar">
   <span class="tag">PROTOTYPE</span>
-  <span class="lbl">PDP populated with hand-written v2.5 content — switch products in the bar below</span>
-  <span class="demo-hint">v2.5 = Highlights (lead) / Overview / decoration facts / SEO. 2 products held pending feed data. Commerce chrome is representative.</span>
+  <span class="lbl">PDP v2.5 — 3 hand-written (_manual) tabs + 7 real DeepSeek output tabs; switch products below</span>
+  <span class="demo-hint">v2.5 = Highlights (lead) / Overview / decoration facts / SEO. Tabs ending _manual are the hand-written targets; the rest are live DeepSeek v2.5 output (2026-06-19). Commerce chrome is representative.</span>
 </div>
 
 <!-- PRODUCT NAVBAR — 5 tabs, one per product / demonstrated case -->
@@ -392,7 +392,7 @@ h1,h2,h3,h4{color:var(--ink);line-height:1.2}
    _temporary/afk-enrichment/compare/v2/<mpn>.json -> result
    Plus REPRESENTATIVE (non-v2) commerce chrome per product.
    ============================================================ */
-const PRODUCTS = [
+const BASE = [
   {
     id:'S608', held:true, case:'Apparel — held', tab:'Port Authority Polo', icon:'shirt',
     crumb:['Home','Apparel','Woven Shirts'],
@@ -617,6 +617,87 @@ const PRODUCTS = [
       xsellCat:'Pens'
     }
   }
+];
+
+/* ============================================================
+   v2.5 TAB SET — 3 hand-written (_manual) + 7 real DeepSeek outputs.
+   BASE (above) holds the original 5 product objects; we reuse their
+   chrome + the 3 hand-written v2 objects BY REFERENCE (no duplication).
+   ============================================================ */
+
+// Real v2.5 Lambda output, generated from _temporary/afk-enrichment/v2.5-run (2026-06-19).
+// block3_imprint_facts here = the agent's pdp_long_description.decoration_facts (null when the feed names no method).
+const V25_REAL = {"B726":{"seo":{"urlSlug":"20-oz-padova-stainless-steel-tumbler","metaTitle":"20 oz Padova Stainless Steel Vacuum Tumbler | PromotionPros","metaDescription":"Custom 20 oz Padova double-wall stainless steel tumbler with copper vacuum insulation, a steel straw, and a craft gift box. Order with screen or full-color imprint."},"rephrased_title":"20 oz Padova Stainless Steel Vacuum Tumbler","rephrased_short_description":"20 oz double-wall stainless steel tumbler with copper vacuum insulation and a powder-coated finish, with a wraparound imprint zone for custom branding.","overview":"The 20 oz Padova is a double-wall stainless steel tumbler with copper vacuum insulation that keeps drinks hot or cold, plus a powder-coated exterior. The matching stainless steel straw seats into a color-coordinated silicone sipper.","highlights":[{"label":"Full-Color Wrap Printing","benefit":"Reproduce a full-color design — a photo, a pattern, or multiple logos — around the entire cup."},{"label":"Decoration in the Price","benefit":"The imprint is included in the listed price, so the per-unit cost is the finished, branded cost."},{"label":"Presentation-Ready","benefit":"Comes with its straw in an individual craft gift box, ready to hand out as a finished gift."}],"block3_imprint_facts":"Method: Screen · Locations: Side 1, Side 2, Full Wrap · Colors: 3 max\nMethod: Jet-Directt · Locations: Side 1, Side 2, Full Wrap · Colors: 256 max","rephrased_long_description":"The 20 oz Padova is a double-wall stainless steel tumbler with copper vacuum insulation that keeps drinks hot or cold, finished with a powder-coated exterior. The matching stainless steel straw seats into a color-coordinated silicone sipper, and each unit ships in an individual craft gift box. Available with a screen or Jet-Directt full-color imprint, including a full wrap around the cup, it is a durable, practical tumbler for custom branding."},"17300-S2":{"seo":{"urlSlug":"16-oz-duo-tone-ceramic-mug-gift-set","metaTitle":"16 oz Duo-Tone Ceramic Mug Gift Set | PromotionPros","metaDescription":"Custom 16 oz duo-tone ceramic mug set of two in a white gift box. Screen-printed with up to 5 colors; order in bulk for giveaways and client gifts."},"rephrased_title":"16 oz Duo-Tone Ceramic Mug Gift Set","rephrased_short_description":"Set of two 16 oz ceramic mugs with a vibrant color exterior and white interior, packed in a white gift box, with a side imprint zone for custom branding.","overview":"This 16 oz duo-tone ceramic mug set pairs a vibrant colored exterior with a crisp white interior. Each set includes two mugs packed in a white gift box, and the easy-grip handle makes it comfortable to hold.","highlights":[{"label":"Gift-Ready Packaging","benefit":"Each set of two mugs comes packed in a white gift box, ready to hand out as a finished gift."},{"label":"Vibrant Color Contrast","benefit":"A bold exterior color paired with a white interior creates a clean, high-contrast look that makes a logo stand out."},{"label":"Easy-Grip Handle","benefit":"The oversized handle provides a comfortable, secure hold for daily use."}],"block3_imprint_facts":"Method: Screen · Locations: Side 1, Side 2, Full Wrap · Colors: 5 max","rephrased_long_description":"This 16 oz duo-tone ceramic mug set pairs a vibrant colored exterior with a crisp white interior for a clean, high-contrast look. Each set includes two mugs packed in a white gift box, and the oversized handle provides a comfortable, secure hold. Available with a screen-printed imprint in up to 5 colors on the side, full wrap, or both sides."},"LM6100":{"seo":{"urlSlug":"bettoni-solid-brass-ballpoint-pen","metaTitle":"Bettoni Solid Brass Ballpoint Pen | PromotionPros","metaDescription":"Custom Bettoni twist-action ballpoint pen with a solid brass barrel and pearlized finish. One-color logo included; produced in 6 business days."},"rephrased_title":"Bettoni Solid Brass Ballpoint Pen","rephrased_short_description":"Twist-action ballpoint pen with a solid brass barrel and a pearlized finish, with a barrel imprint zone for custom branding.","overview":"The Bettoni is a twist-action ballpoint pen with a solid brass barrel and a pearlized finish. An integrated metal pocket clip holds it in place, and a twist of the barrel advances the point.","highlights":[{"label":"Logo Included","benefit":"A one-color logo in one location is included in the unit price; extra colors or locations are quoted separately."},{"label":"6 Business Days","benefit":"Produced on a 6-business-day lead time."}],"block3_imprint_facts":null,"rephrased_long_description":"The Bettoni is a twist-action ballpoint pen with a solid brass barrel and a pearlized finish. An integrated metal pocket clip holds it in place, and a twist of the barrel advances the point. A durable metal pen that accepts a custom imprint on the barrel."},"T537R5":{"seo":{"urlSlug":"bic-triumph-537r-ultra-fine-pen","metaTitle":"BIC Triumph 537R .5mm Pen | PromotionPros","metaDescription":"Custom BIC Triumph 537R .5mm ultra-fine pen with a smooth ink system and tungsten carbide ball. Order with screen-printed cap imprint, 5-day lead time."},"rephrased_title":"BIC Triumph 537R .5mm Pen","rephrased_short_description":"Two-piece pen with a .5mm ultra-fine point and a tungsten carbide ball, with a cap imprint zone for custom branding.","overview":"The BIC Triumph 537R is a two-piece pen with a .5mm ultra-fine point and a super-smooth ink system. A tungsten carbide ball at the tip delivers a steady, skip-free line.","highlights":[{"label":"Ultra-Fine .5mm Point","benefit":"The .5mm tip lays down a precise line for detailed writing and tight forms."},{"label":"Tungsten Carbide Ball","benefit":"A hard tungsten carbide ball resists wear and keeps the ink flow consistent over the life of the pen."},{"label":"5-Day Lead Time","benefit":"Ships in 5 business days, so a branded order can turn around quickly."}],"block3_imprint_facts":"Method: Screen Print · Location: Cap","rephrased_long_description":"The BIC Triumph 537R is a two-piece pen with a .5mm ultra-fine point and a super-smooth ink system. A tungsten carbide ball at the tip delivers a steady, skip-free line, and the ultra-fine point is suited for detailed writing and tight forms. Available with a screen-printed cap imprint for custom branding."},"LAA-YT10":{"seo":{"urlSlug":"yellowfin-tuna-stress-reliever","metaTitle":"Yellowfin Tuna Stress Reliever | PromotionPros","metaDescription":"Custom Yellowfin Tuna shaped stress reliever made of soft polyurethane. Order with a pad-printed logo on the side for giveaways."},"rephrased_title":"Yellowfin Tuna Polyurethane Stress Reliever","rephrased_short_description":"Yellowfin tuna-shaped stress reliever made of soft polyurethane, sized for desk and pocket use, with a side imprint zone for custom branding.","overview":"This stress reliever is molded from soft polyurethane into the shape of a yellowfin tuna, with a compact size that fits in a hand or pocket. The side panel provides a clean surface for a custom imprint.","highlights":[{"label":"Soft Polyurethane Construction","benefit":"The polyurethane material compresses easily and returns to shape, making it a durable squeeze toy for repeated use."},{"label":"Side Imprint Zone","benefit":"A flat side panel accepts a pad-printed logo in up to four colors, keeping your design visible from a desk or counter."}],"block3_imprint_facts":"Method: Pad · Location: Side · Colors: 4 max","rephrased_long_description":"This stress reliever is molded from soft polyurethane into the shape of a yellowfin tuna, with a compact size that fits in a hand or pocket. The polyurethane material compresses easily and returns to shape, making it a durable squeeze toy for repeated use. A flat side panel accepts a pad-printed logo in up to four colors, keeping your design visible from a desk or counter."},"S608":{"seo":{"urlSlug":"port-authority-easy-care-long-sleeve-shirt","metaTitle":"Port Authority Easy Care Long Sleeve Shirt | PromotionPros","metaDescription":"Custom Port Authority 4.5 oz cotton/poly long sleeve shirt with wrinkle resistance and a button-down collar. Order with embroidery or screen print."},"rephrased_title":"Port Authority 4.5 oz Cotton/Poly Long Sleeve Easy Care Shirt","rephrased_short_description":"4.5 oz cotton/poly long sleeve shirt with wrinkle resistance, a button-down collar, and a left chest pocket, with a left-chest imprint zone for custom branding.","overview":"This Port Authority long sleeve shirt is cut from a 4.5-ounce 55/45 cotton/poly blend that resists wrinkles and holds its shape through a workday. A button-down collar, dyed-to-match buttons, and a left chest pocket keep the front clean, while a back box pleat and rounded adjustable cuffs add ease of movement.","highlights":[{"label":"Wrinkle Resistance","benefit":"The 55/45 cotton/poly blend resists wrinkles, so the shirt looks pressed straight from the dryer."},{"label":"Adjustable Cuffs","benefit":"Rounded adjustable cuffs let the wearer dial in the sleeve length for a clean fit."},{"label":"Back Box Pleat","benefit":"A back box pleat adds range of motion across the shoulders without pulling."}],"block3_imprint_facts":null,"rephrased_long_description":"This Port Authority long sleeve shirt is cut from a 4.5-ounce 55/45 cotton/poly blend that resists wrinkles and holds its shape through a workday. A button-down collar, dyed-to-match buttons, and a left chest pocket keep the front clean, while a back box pleat and rounded adjustable cuffs add ease of movement. The wrinkle-resistant fabric looks pressed straight from the dryer, and the adjustable cuffs let the wearer dial in the sleeve length. Available with a custom imprint for branding."},"7127":{"seo":{"urlSlug":"award-in-motion-globe","metaTitle":"Award in Motion Globe | PromotionPros","metaDescription":"Custom-imprinted spinning globe award made of black glass and optical crystal. Order a single unit for recognition programs."},"rephrased_title":"Award in Motion Black Glass and Optical Crystal Globe","rephrased_short_description":"Spinning globe award made of black glass and optical crystal, measuring 3 1/2\" x 4 3/4\", with an imprint zone for employee recognition and service milestones.","overview":"This globe award combines a black glass base with an optical crystal globe that spins by hand. It stands 3 1/2\" wide by 4 3/4\" tall and comes in a black gift box.","highlights":[{"label":"Single-Unit Ordering","benefit":"A minimum of one makes it practical to order a single award for an individual honoree."},{"label":"Personalization Included","benefit":"One imprint process and one location are included in the price, along with personalization."},{"label":"Presentation-Ready","benefit":"Packaged in a black gift box, ready to hand out at a recognition event."}],"block3_imprint_facts":null,"rephrased_long_description":"This globe award combines a black glass base with an optical crystal globe that spins by hand. It stands 3 1/2\" wide by 4 3/4\" tall and comes in a black gift box. One imprint process and one location are included in the price, along with personalization, making it a practical choice for individual recognition."}};
+
+// Representative commerce chrome for the two products not already in BASE (placeholder, category-adapted — not real data).
+const NEW_CHROME = {
+  '17300-S2':{
+    price:'$11.80', priceEa:'/ set at 48', tiers:'24 → $13.40 · 48 → $11.80 · 96 → $10.60 · 250 → $9.40 each',
+    qty:'48',
+    swatches:[['Red','b3242c',1],['Navy','1f2a44'],['Black','1a1a1a'],['Forest','177a3a'],['Cobalt','1f3fae']],
+    swatchLabel:'Red',
+    lead:'Production: 7 business days after proof approval',
+    deliver:'Arrives by Thu, Jun 25 with standard shipping',
+    sizing:null,
+    specs:[['Capacity','16 oz (each)'],['Set','Two mugs'],['Material','Ceramic'],['Exterior','Colored gloss'],['Interior','White'],['Handle','Oversized easy-grip'],['Imprint','Screen, up to 5 colors'],['Packaging','White gift box']],
+    reviewAvg:'4.7', reviewCount:'63', reviewDist:[['5',78],['4',15],['3',4],['2',2],['1',1]],
+    kw:['Gift box (22)','Color pop (18)','Sturdy (12)','Print quality (10)'],
+    reviews:[
+      ['★★★★★','Marcy T.','May 2026','Gave these as a client thank-you — the two-tone color and white box looked great with our logo. Felt like a real gift, not swag.'],
+      ['★★★★☆','Owen K.','Apr 2026','Nice heavy mugs and the set of two is a good value. Screen print came out clean in three colors.']],
+    qa:[
+      ['Is this priced per mug or per set?','Pricing is per set of two mugs. Tier breaks apply to the number of sets.'],
+      ['How many imprint colors can I use?','Screen printing supports up to 5 colors. Add your art in the Customize step or send it to your rep for a proof.'],
+      ['Are they dishwasher safe?','We recommend hand washing to protect the gloss exterior and the printed decoration.']],
+    xsell:[['16 oz Stoneware Mug','$6.90','4.7 (180)'],['12 oz Café Ceramic Mug','$7.40','4.6 (120)'],['15 oz Two-Tone Mug','$8.20','4.7 (96)'],['20 oz Padova Tumbler','$14.95','4.8 (171)']],
+    xsellCat:'Mugs'
+  },
+  'LM6100':{
+    price:'$6.40', priceEa:'/ ea at 100', tiers:'50 → $7.20 · 100 → $6.40 · 250 → $5.75 · 500 → $5.10 each',
+    qty:'100',
+    swatches:[['Pearl White','e9e6df',1],['Gunmetal','3a3f45'],['Navy','1f2a44'],['Burgundy','6e1f2b']],
+    swatchLabel:'Pearl White',
+    lead:'Production: 6 business days after proof approval',
+    deliver:'Arrives by Wed, Jun 24 with standard shipping',
+    sizing:null,
+    specs:[['Barrel','Solid brass'],['Finish','Pearlized'],['Mechanism','Twist action'],['Clip','Integrated metal pocket clip'],['Refill','Black ballpoint'],['Decoration','Custom imprint on barrel'],['Lead time','6 business days']],
+    reviewAvg:'4.8', reviewCount:'74', reviewDist:[['5',85],['4',11],['3',3],['2',1],['1',0]],
+    kw:['Heavy/premium (28)','Smooth write (19)','Looks expensive (15)','Gift-worthy (9)'],
+    reviews:[
+      ['★★★★★','Denise R.','May 2026','Ordered 100 for an executive gifting program. The brass weight makes them feel premium and our logo looked sharp on the barrel.'],
+      ['★★★★☆','Sam P.','Mar 2026','Solid, weighty pen that writes smoothly. A clear step up from the usual plastic giveaway pens.']],
+    qa:[
+      ['Where does the logo go?','Your logo is decorated on the barrel. Submit art in the Customize step or to your rep and we will confirm the method and proof.'],
+      ['Is this a heavier pen?','Yes — the solid brass barrel gives it a substantial, premium weight, which makes it well suited to executive gifts.'],
+      ['What is the lead time?','Standard production is 6 business days after proof approval.']],
+    xsell:[['Bettoni Brass Rollerball','$7.80','4.8 (52)'],['Metal Twist Ballpoint','$3.40','4.7 (140)'],['Executive Gift Pen Set','$12.50','4.9 (38)'],['Bamboo Ballpoint Pen','$1.90','4.6 (210)']],
+    xsellCat:'Pens'
+  }
+};
+
+// Tab metadata (case eyebrow / product label / gallery icon / breadcrumb) per product.
+const META = {
+  'B726':    {case:'Drinkware', tab:'Tumbler (multi-method)',     icon:'cup',   crumb:['Home','Drinkware','Tumblers']},
+  '17300-S2':{case:'Drinkware', tab:'Ceramic Mug Set',            icon:'cup',   crumb:['Home','Drinkware','Mugs']},
+  'LM6100':  {case:'Pen',       tab:'Bettoni Brass Pen',          icon:'pen',   crumb:['Home','Stationery','Pens']},
+  'T537R5':  {case:'Pen',       tab:'BIC (single-method)',        icon:'pen',   crumb:['Home','Stationery','Pens']},
+  'LAA-YT10':{case:'Novelty',   tab:'Stress Toy (single-method)', icon:'fish',  crumb:['Home','Novelty & Toys','Stress Relievers']},
+  'S608':    {case:'Apparel',   tab:'Port Authority Shirt',       icon:'shirt', crumb:['Home','Apparel','Woven Shirts']},
+  '7127':    {case:'Award',     tab:'Spinning Globe',             icon:'globe', crumb:['Home','Office & Awards','Crystal Awards']}
+};
+
+const byId = Object.fromEntries(BASE.map(p=>[p.id,p]));
+const chromeFor = mpn => (byId[mpn] && byId[mpn].chrome) || NEW_CHROME[mpn];
+const MANUAL_SET = ['B726','LAA-YT10','T537R5'];                                   // the 3 hand-written tabs
+const REAL_SET   = ['B726','17300-S2','LM6100','T537R5','LAA-YT10','S608','7127'];  // "Products to test" order
+
+const PRODUCTS = [
+  // 3 hand-written v2.5 target tabs — reuse BASE's hand-written v2 + chrome; tab gets the _manual suffix.
+  ...MANUAL_SET.map(m=>({ id:m+'_manual', case:META[m].case, tab:META[m].tab+'_manual',
+       icon:META[m].icon, crumb:META[m].crumb, v2:byId[m].v2, chrome:chromeFor(m) })),
+  // 7 real DeepSeek v2.5 output tabs.
+  ...REAL_SET.map(m=>({ id:m, case:META[m].case, tab:META[m].tab,
+       icon:META[m].icon, crumb:META[m].crumb, v2:V25_REAL[m], chrome:chromeFor(m) }))
 ];
 
 /* ---------- helpers ---------- */
